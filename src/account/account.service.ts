@@ -4,6 +4,12 @@ import { Account, AccountDocument, Currency } from './account.model';
 import { Model } from 'mongoose';
 import { AccountController } from './account.controller';
 
+const createCvu = () => {
+  const a = Math.random() * 10 ** 23;
+  const b = a.toLocaleString('fullwide', { useGrouping: false });
+  return b;
+};
+
 @Injectable()
 export class AccountService {
   constructor(
@@ -23,7 +29,11 @@ export class AccountService {
   }
 
   async createAccount(id, account: Account): Promise<Account> {
-    const newAccount = new this.accountModel({ ...account, _id: id });
+    const newAccount = new this.accountModel({
+      ...account,
+      _id: id,
+      cvu: createCvu(),
+    });
     return await newAccount.save();
   }
 
