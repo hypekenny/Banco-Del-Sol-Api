@@ -17,6 +17,7 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 
+
 # Gradle:
 .idea/**/gradle.xml
 .idea/**/libraries
@@ -222,6 +223,10 @@ PublishScripts/
 
 # NuGet Packages
 *.nupkg
+
+# Package lock json
+package-lock.json
+
 # The packages folder can be ignored because of Package Restore
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
