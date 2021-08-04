@@ -17,6 +17,11 @@ export class AccountService {
     return account.balance;
   }
 
+  async getAccount(id: string): Promise<Account> {
+    const account = await this.accountModel.findById(id);
+    return account;
+  }
+
   async createAccount(id, account: Account): Promise<Account> {
     const newAccount = new this.accountModel({ ...account, _id: id });
     return await newAccount.save();
