@@ -29,7 +29,7 @@ export class User {
   @Prop()
   phoneNumber: string;
 
-  @Prop()
+  @Prop({ type: Object })
   address: address;
 }
 
