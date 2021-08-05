@@ -14,19 +14,19 @@ interface address {
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ required: true, unique: true })
   dni: number;
 
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   lastName: string;
 
-  @Prop()
+  @Prop({ required: true })
   birthdate: string;
 
-  @Prop()
+  @Prop({ required: true, unique: true })
   phoneNumber: string;
 
   @Prop({ type: Object })
