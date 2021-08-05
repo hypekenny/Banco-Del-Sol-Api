@@ -11,16 +11,16 @@ export enum Currency {
 
 @Schema()
 export class Account {
-  @Prop()
+  @Prop({ required: true })
   _id: string;
 
-  @Prop()
+  @Prop({ required: true, default: 0 })
   balance: number;
 
-  @Prop()
+  @Prop({ required: true })
   cvu: string;
 
-  @Prop()
+  @Prop({ default: 'peso', enum: Currency })
   currency: Currency;
 }
 
