@@ -18,39 +18,59 @@ export class AccountService {
   ) {}
 
   async getBalance(id: string): Promise<number> {
-    const account = await this.accountModel.findById(id);
-    console.log(account);
-    return account.balance;
+    try {
+      const account = await this.accountModel.findById(id);
+      console.log(account);
+      return account.balance;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getAccount(id: string): Promise<Account> {
-    const account = await this.accountModel.findById(id);
-    return account;
+    try {
+      const account = await this.accountModel.findById(id);
+      return account;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async createAccount(id, account: Account): Promise<Account> {
-    const newAccount = new this.accountModel({
-      ...account,
-      _id: id,
-      cvu: createCvu(),
-    });
-    return await newAccount.save();
+    try {
+      const newAccount = new this.accountModel({
+        ...account,
+        _id: id,
+        cvu: createCvu(),
+      });
+      return await newAccount.save();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async modifyBalance(id: string, balance: number): Promise<number> {
-    const updatedBalance = await this.accountModel.findByIdAndUpdate(
-      id,
-      {
-        ...Account,
-        balance: balance,
-      },
-      { new: true },
-    );
-    return updatedBalance.balance;
+    try {
+      const updatedBalance = await this.accountModel.findByIdAndUpdate(
+        id,
+        {
+          ...Account,
+          balance: balance,
+        },
+        { new: true },
+      );
+      return updatedBalance.balance;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getCvu(id: string): Promise<string> {
-    const account = await this.accountModel.findById(id);
-    return account.cvu;
+    try {
+      const account = await this.accountModel.findById(id);
+      return account.cvu;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

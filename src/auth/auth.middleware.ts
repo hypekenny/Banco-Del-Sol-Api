@@ -26,23 +26,27 @@ export class AuthMiddleware implements NestMiddleware {
     });
   }
   use(req: Request, res: Response, next: () => void) {
-    const token = req.headers.authorization;
-    if (token != null && token != '') {
-      this.defaultApp
-        .auth()
-        .verifyIdToken(token.replace('Bearer ', ''))
-        .then(async (decodedToken) => {
-          const user = await this.userService.getUserByEmail(
-            decodedToken.email,
-          );
-          req['user'] = user;
-          next();
-        })
-        .catch((error) => {
-          console.log(error);
-          this.accessDenied(req.url, res);
-        });
-    } else return res.status(401).json({ message: 'token not found' });
+    try {
+      const token = req.headers.authorization;
+      if (token != null && token != '') {
+        this.defaultApp
+          .auth()
+          .verifyIdToken(token.replace('Bearer ', ''))
+          .then(async (decodedToken) => {
+            const user = await this.userService.getUserByEmail(
+              decodedToken.email,
+            );
+            req['user'] = user;
+            next();
+          })
+          .catch((error) => {
+            console.log(error);
+            this.accessDenied(req.url, res);
+          });
+      } else return res.status(401).json({ message: 'token not found' });
+    } catch (error) {
+      console.log(error);
+    }
   }
   private accessDenied(url: string, res: Response) {
     res.status(403).json({
