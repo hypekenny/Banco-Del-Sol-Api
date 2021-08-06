@@ -1,8 +1,8 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { request, response } from 'express';
+import { Request, Response } from 'express';
 import * as firebase from 'firebase-admin';
-import { url } from 'inspector';
 import * as serviceAccount from './firebaseServiceAccount.json';
+import { UserService } from 'src/user/user.service';
 
 const firebase_params = {
   type: serviceAccount.type,
@@ -19,38 +19,37 @@ const firebase_params = {
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   private defaultApp: any;
-  constructor() {
+  constructor(private readonly userService: UserService) {
     this.defaultApp = firebase.initializeApp({
       credential: firebase.credential.cert(firebase_params),
       databaseURL: 'https://banco-del-sol-411e6-default-rtdb.firebaseio.com',
     });
   }
-  use(req: any, res: any, next: () => void) {
+  use(req: Request, res: Response, next: () => void) {
     const token = req.headers.authorization;
     if (token != null && token != '') {
       this.defaultApp
         .auth()
-        .verifyidToken(token.replace('Bearer ', ''))
+        .verifyIdToken(token.replace('Bearer ', ''))
         .then(async (decodedToken) => {
-          const user = {
-            email: decodedToken.email,
-          };
+          const user = await this.userService.getUserByEmail(
+            decodedToken.email,
+          );
           req['user'] = user;
           next();
         })
         .catch((error) => {
           console.log(error);
-          // this.accessDenied(req.url, res);
+          this.accessDenied(req.url, res);
         });
-    } else next();
+    } else return res.status(401).json({ message: 'token not found' });
+  }
+  private accessDenied(url: string, res: Response) {
+    res.status(403).json({
+      statusCode: 403,
+      timestamp: new Date().toISOString(),
+      path: url,
+      message: 'Access Denied',
+    });
   }
 }
-
-// private accessDenied(url:string ,  res: Response){
-// response.status(403).json({
-//   statusCode : 403 ,
-//   timestamp : new Date().toISOString(),
-//   path : url,
-//   message : 'Access Denied'
-// })
-// }
