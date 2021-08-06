@@ -26,13 +26,6 @@ export class UserController {
     });
   }
 
-  @Get('/:id')
-  async getUser(@Res() res, @Param('id') id: string) {
-    const user = await this.userService.getUserById(id);
-    if (!user) throw new NotFoundException('User does not exist');
-    return res.status(HttpStatus.OK).json(user);
-  }
-
   @Post()
   async createUser(@Res() res, @Body() user): Promise<User> {
     const newUser = await this.userService.createUser(user);

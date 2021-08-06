@@ -19,20 +19,32 @@ export class AccountController {
 
   @Get('/detail/:id')
   async getAccount(@Res() res, @Param('id') id: string) {
-    const account = await this.accountService.getAccount(id);
-    return res.status(HttpStatus.OK).json(account);
+    try {
+      const account = await this.accountService.getAccount(id);
+      return res.status(HttpStatus.OK).json(account);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Get('/:id')
   async getBalance(@Res() res, @Param('id') id: string) {
-    const balance = await this.accountService.getBalance(id);
-    return res.status(HttpStatus.OK).json(balance);
+    try {
+      const balance = await this.accountService.getBalance(id);
+      return res.status(HttpStatus.OK).json(balance);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Get('/cvu/:id')
   async getCvu(@Res() res, @Param('id') id: string) {
-    const cvu = await this.accountService.getCvu(id);
-    return res.status(HttpStatus.OK).json(cvu);
+    try {
+      const cvu = await this.accountService.getCvu(id);
+      return res.status(HttpStatus.OK).json(cvu);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Post('/:id')
@@ -41,11 +53,15 @@ export class AccountController {
     @Param('id') id: string,
     @Body() body: Account,
   ) {
-    const newAccount = await this.accountService.createAccount(id, body);
-    return res.status(HttpStatus.OK).json({
-      message: 'Account created',
-      account: newAccount,
-    });
+    try {
+      const newAccount = await this.accountService.createAccount(id, body);
+      return res.status(HttpStatus.OK).json({
+        message: 'Account created',
+        account: newAccount,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Put('/balance/:id')
@@ -54,13 +70,17 @@ export class AccountController {
     @Param('id') id: string,
     @Body() body: Account,
   ) {
-    const newBalance = await this.accountService.modifyBalance(
-      id,
-      body.balance,
-    );
-    return res.status(HttpStatus.OK).json({
-      message: 'Balance updated',
-      account: newBalance,
-    });
+    try {
+      const newBalance = await this.accountService.modifyBalance(
+        id,
+        body.balance,
+      );
+      return res.status(HttpStatus.OK).json({
+        message: 'Balance updated',
+        account: newBalance,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
