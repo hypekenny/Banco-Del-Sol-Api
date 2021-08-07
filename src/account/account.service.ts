@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Account, AccountDocument, Currency } from './account.model';
+import { Account, AccountDocument } from './account.model';
 import { Model } from 'mongoose';
-import { AccountController } from './account.controller';
 
 const createCvu = () => {
   const a = Math.random() * 10 ** 23;
@@ -17,30 +16,22 @@ export class AccountService {
     private readonly accountModel: Model<AccountDocument>,
   ) {}
 
-  async getBalance(id: string): Promise<number> {
+  async getAccount(account: Account): Promise<Account> {
     try {
-      const account = await this.accountModel.findById(id);
-      console.log(account);
-      return account.balance;
+      const findAccount = await this.accountModel.findOne({
+        email: account.email,
+      });
+      return findAccount;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getAccount(id: string): Promise<Account> {
-    try {
-      const account = await this.accountModel.findById(id);
-      return account;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async createAccount(id, account: Account): Promise<Account> {
+  async createAccount(account: Account): Promise<Account> {
     try {
       const newAccount = new this.accountModel({
         ...account,
-        _id: id,
+        email: account.email,
         cvu: createCvu(),
       });
       return await newAccount.save();
@@ -49,26 +40,13 @@ export class AccountService {
     }
   }
 
-  async modifyBalance(id: string, balance: number): Promise<number> {
+  async updateAccount(account: Account) {
     try {
-      const updatedBalance = await this.accountModel.findByIdAndUpdate(
-        id,
-        {
-          ...Account,
-          balance: balance,
-        },
-        { new: true },
-      );
-      return updatedBalance.balance;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getCvu(id: string): Promise<string> {
-    try {
-      const account = await this.accountModel.findById(id);
-      return account.cvu;
+      const findAccount = await this.accountModel.findOneAndUpdate({
+        email: account.email,
+        account,
+      });
+      return findAccount;
     } catch (error) {
       console.log(error);
     }

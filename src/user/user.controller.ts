@@ -7,7 +7,6 @@ import {
   Query,
   Res,
   HttpStatus,
-  Param,
   NotFoundException,
 } from '@nestjs/common';
 
@@ -28,6 +27,7 @@ export class UserController {
 
   @Post()
   async createUser(@Res() res, @Body() user): Promise<User> {
+    console.log('FFFFFFFFFFFFFFFF');
     const newUser = await this.userService.createUser(user);
     return res.status(HttpStatus.OK).json({
       message: 'User created',
