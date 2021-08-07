@@ -27,8 +27,11 @@ export class AuthMiddleware implements NestMiddleware {
   }
   use(req: Request, res: Response, next: () => void) {
     try {
+      console.log('RRRRRRRRRRRRRRRRRR', req.headers.authorization);
       const token = req.headers.authorization;
+      console.log('LLLLLLLLLLLLL', req.query);
       if (token != null && token != '') {
+        console.log('AAAAAAAAAA');
         this.defaultApp
           .auth()
           .verifyIdToken(token.replace('Bearer ', ''))
@@ -36,6 +39,7 @@ export class AuthMiddleware implements NestMiddleware {
             const user = await this.userService.getUserByEmail(
               decodedToken.email,
             );
+            console.log('JJJJJJJJJJJJ', user);
             req['user'] = user;
             next();
           })
