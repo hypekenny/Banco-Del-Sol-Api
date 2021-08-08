@@ -16,10 +16,10 @@ export class AccountService {
     private readonly accountModel: Model<AccountDocument>,
   ) {}
 
-  async getAccount(account: Account): Promise<Account> {
+  async getAccount(email: string): Promise<Account> {
     try {
       const findAccount = await this.accountModel.findOne({
-        email: account.email,
+        email: email,
       });
       return findAccount;
     } catch (error) {
@@ -40,12 +40,18 @@ export class AccountService {
     }
   }
 
-  async updateAccount(account: Account) {
+  async updateAccount(email: string, newBalance: number) {
     try {
-      const findAccount = await this.accountModel.findOneAndUpdate({
-        email: account.email,
-        account,
-      });
+      const findAccount = await this.accountModel.findOneAndUpdate(
+        {
+          email: email,
+        },
+        { balance: newBalance },
+        {
+          new: true,
+          useFindAndModify: false,
+        },
+      );
       return findAccount;
     } catch (error) {
       console.log(error);

@@ -1,32 +1,46 @@
-import { Controller, Get, Res, HttpStatus, Put, Body } from '@nestjs/common';
-import { Account } from './account.model';
+import {
+  Controller,
+  Get,
+  Res,
+  HttpStatus,
+  Put,
+  Body,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from './account.service';
 
 @Controller('account')
+@UseGuards(AuthGuard('jwt'))
 export class AccountController {
   constructor(private accountService: AccountService) {}
 
-  @Get('/')
-  async getAccount(@Res() res, @Body() account: Account) {
+  @Get()
+  async getAccount(@Res() res, @Req() req) {
     try {
-      const findAccount = await this.accountService.getAccount(account);
+      const findAccount = await this.accountService.getAccount(req.user.email);
       return res.status(HttpStatus.OK).json(findAccount);
-      // return res.send(findAccount);
     } catch (error) {
       console.log(error);
+      return null;
     }
   }
 
-  @Put('/')
-  async updateBalance(@Res() res, @Body() account: Account) {
+  @Put()
+  async updateAccount(@Res() res, @Body() body, @Req() req) {
     try {
-      const newBalance = await this.accountService.updateAccount(account);
+      const updatedAccount = await this.accountService.updateAccount(
+        req.user.email,
+        body.newBalance,
+      );
       return res.status(HttpStatus.OK).json({
         message: 'Balance updated',
-        account: newBalance,
+        account: updatedAccount,
       });
     } catch (error) {
       console.log(error);
+      return null;
     }
   }
 }
