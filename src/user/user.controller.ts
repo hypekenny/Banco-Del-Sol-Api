@@ -26,9 +26,9 @@ export class UserController {
   @Get()
   async getUser(@Res() res, @Req() req) {
     try {
-      const users = await this.userService.getUserByEmail(req.user.email);
+      const user = await this.userService.getUserByEmail(req.user.email);
       return res.status(HttpStatus.OK).json({
-        users,
+        user,
       });
     } catch (error) {
       console.log(error);
