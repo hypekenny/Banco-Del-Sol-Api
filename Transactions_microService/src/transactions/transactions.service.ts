@@ -26,7 +26,6 @@ export class TransactionsService {
         type: newTransaction.type,
         date: Date(),
       });
-      console.log('AAAAAAAAAAA', transaction);
       return transaction;
     } catch (error) {
       console.log(error);
