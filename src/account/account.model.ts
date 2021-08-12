@@ -3,12 +3,12 @@ import { Document } from 'mongoose';
 
 export type AccountDocument = Account & Document;
 
-interface balanceType {
+export interface balanceType {
   amount: number;
-  history: Array<transactionType>;
+  history: transactionType[];
 }
 
-interface transactionType {
+export interface transactionType {
   email: string;
   type: string;
   value: number;
@@ -20,7 +20,7 @@ export class Account {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true, default: 0 })
+  @Prop({ required: true })
   balance: balanceType;
 
   @Prop({ required: true })
