@@ -34,7 +34,7 @@ export class TransactionsController {
       const newTransaction = await this.transactionService.createTransaction(
         body,
       );
-      return res.status(HttpStatus.OK).json({
+      return res.status(HttpStatus.OK).send({
         message: 'Transaction completed',
         transaction: newTransaction,
       });

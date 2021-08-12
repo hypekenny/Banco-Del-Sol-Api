@@ -31,4 +31,19 @@ export class TransactionsService {
       console.log(error);
     }
   }
+
+  /*   async updateAccount(transaction: Transaction) {
+  const findAccount = await this.accountModel.findOne({ email });
+      findAccount.balance.amount += newTransaction.value;
+      findAccount.balance.history.push(newTransaction);
+      const updated = await this.accountModel.findOneAndUpdate(
+        { email },
+        findAccount,
+        {
+          new: true,
+          useFindAndModify: false,
+        },
+      );
+      return updated;
+} */
 }
