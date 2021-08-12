@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Req,
+  Post,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 
@@ -14,16 +15,30 @@ import { TransactionsService } from './transactions.service';
 export class TransactionsController {
   constructor(private transactionService: TransactionsService) {}
 
-
-@Get()
-async getTransactions(@Res() res, @Req req) {
+  @Get()
+  async getTransactions(@Res() res, @Body body) {
     try {
-        const transactions = await this.transactionService.
+      const transactions = await this.transactionService.getTransactions(
+        body.email,
+      );
+      return res.status(HttpStatus.OK).json(transactions);
+    } catch (error) {
+      console.log(error);
+      return null;
     }
-}
+  }
 
-
-@Put()
-
-
+  @Post()
+  async newTransaction(@Res() res, @Body body) {
+    try {
+      const transaction = await this.transactionService.createTransaction(body);
+      return res.status(HttpStatus.OK).json({
+        message: 'Transaction completed',
+        transaction,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500);
+    }
+  }
 }
