@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Account, AccountDocument } from './account.model';
+import { Account, AccountDocument, transactionType } from './account.model';
 import { Model } from 'mongoose';
 
 const createCvu = () => {
@@ -40,19 +40,56 @@ export class AccountService {
     }
   }
 
-  async updateAccount(email: string, newBalance: number) {
+  async updateAccount(tran: transactionType) {
     try {
-      const findAccount = await this.accountModel.findOneAndUpdate(
-        {
-          email: email,
-        },
-        { balance: newBalance },
+      let updateSender = {};
+      if (tran.receiver_email === tran.sender_email) {
+        const findSender = await this.accountModel.findOne({
+          email: tran.sender_email,
+        });
+        findSender.balance.amount += tran.value;
+        findSender.balance.history.push(tran);
+        updateSender = await this.accountModel.findOneAndUpdate(
+          { email: tran.sender_email },
+          findSender,
+          {
+            new: true,
+            useFindAndModify: false,
+          },
+        );
+      } else {
+        const findSender = await this.accountModel.findOne({
+          email: tran.sender_email,
+        });
+        findSender.balance.amount -= tran.value;
+        findSender.balance.history.push(tran);
+        updateSender = await this.accountModel.findOneAndUpdate(
+          { email: tran.sender_email },
+          findSender,
+          {
+            new: true,
+            useFindAndModify: false,
+          },
+        );
+      }
+      const findReceiver = await this.accountModel.findOne({
+        email: tran.receiver_email,
+      });
+      findReceiver.balance.amount += tran.value;
+      findReceiver.balance.history.push(tran);
+      const updateReceiver = await this.accountModel.findOneAndUpdate(
+        { email: tran.receiver_email },
+        findReceiver,
         {
           new: true,
           useFindAndModify: false,
         },
       );
-      return findAccount;
+      return {
+        message: 'Transaction succeeded',
+        updateReceiver,
+        updateSender,
+      };
     } catch (error) {
       console.log(error);
     }
