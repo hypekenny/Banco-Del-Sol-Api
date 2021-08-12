@@ -31,10 +31,12 @@ export class TransactionsController {
   @Post()
   async newTransaction(@Res() res, @Body() body) {
     try {
-      const transaction = await this.transactionService.createTransaction(body);
+      const newTransaction = await this.transactionService.createTransaction(
+        body,
+      );
       return res.status(HttpStatus.OK).json({
         message: 'Transaction completed',
-        transaction,
+        transaction: newTransaction,
       });
     } catch (error) {
       console.error(error);

@@ -11,9 +11,6 @@ export class Transaction {
   @Prop({ required: true })
   receiver_email: string;
 
-  @Prop({ required: false })
-  receiver_account: string;
-
   @Prop({ required: true })
   amount: number;
 
