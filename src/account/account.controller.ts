@@ -32,9 +32,9 @@ export class AccountController {
   async updateAccount(@Res() res, @Body() body, @Req() req) {
     try {
       const findAccount = await this.accountService.getAccount(req.user.email);
-      const balance: number = findAccount.balance + body.value;
+      const value: number = findAccount.balance.amount + body.value;
       const transaction: transactionType = body.transaction;
-      const newTransaction = { balance, transaction };
+      const newTransaction = { value, transaction };
       const updatedAccount = await this.accountService.updateAccount(
         req.user.email,
         newTransaction,

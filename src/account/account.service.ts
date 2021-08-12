@@ -4,7 +4,7 @@ import { Account, AccountDocument, transactionType } from './account.model';
 import { Model } from 'mongoose';
 
 interface newTransactionType {
-  balance: number;
+  value: number;
   transaction: transactionType;
 }
 
@@ -49,11 +49,13 @@ export class AccountService {
     try {
       const findAccount = await this.accountModel.findOneAndUpdate(
         {
-          email: email,
+          email,
         },
         {
-          $set: { amount: newTransaction.balance },
-          $push: { history: newTransaction.transaction },
+          amount: newTransaction.value,
+          $push: {
+            history: newTransaction.transaction,
+          },
         },
         {
           new: true,
@@ -66,3 +68,6 @@ export class AccountService {
     }
   }
 }
+
+// balance: { amount: newTransaction.balance },
+// $push: { history: newTransaction.transaction },
