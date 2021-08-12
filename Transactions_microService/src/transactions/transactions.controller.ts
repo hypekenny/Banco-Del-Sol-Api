@@ -23,8 +23,8 @@ export class TransactionsController {
       );
       return res.status(HttpStatus.OK).json(transactions);
     } catch (error) {
-      console.log(error);
-      return null;
+      console.error(error);
+      return res.status(500);
     }
   }
 
@@ -40,7 +40,7 @@ export class TransactionsController {
       });
     } catch (error) {
       console.error(error);
-      return res.status(500);
+      return res.status(400);
     }
   }
 }
