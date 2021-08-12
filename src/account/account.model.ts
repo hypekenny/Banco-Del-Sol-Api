@@ -1,7 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { Document } from 'mongoose';
-import { isObject } from 'util';
 
 export type AccountDocument = Account & Document;
 
