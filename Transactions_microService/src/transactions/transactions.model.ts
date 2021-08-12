@@ -12,7 +12,7 @@ export class Transaction {
   receiver_email: string;
 
   @Prop({ required: true })
-  amount: number;
+  value: number;
 
   @Prop({ required: true })
   type: string;

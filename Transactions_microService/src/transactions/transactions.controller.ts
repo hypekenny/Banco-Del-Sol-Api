@@ -10,10 +10,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
+import { AccountService } from '../account/account.service';
 
 @Controller('transactions')
 export class TransactionsController {
-  constructor(private transactionService: TransactionsService) {}
+  constructor(
+    private transactionService: TransactionsService,
+    private accountService: AccountService,
+  ) {}
 
   @Get()
   async getTransactions(@Res() res, @Body() body) {
@@ -43,4 +47,22 @@ export class TransactionsController {
       return res.status(400);
     }
   }
+
+  @Post()
+  async updateAccount(transaction) {
+    const updated = await this.accountService.updateAccount;
+  }
+  /*     const findAccount = await this.accountModel.findOne({ email });
+      findAccount.balance.amount += newTransaction.value;
+      findAccount.balance.history.push(newTransaction);
+      const updated = await this.accountModel.findOneAndUpdate(
+        { email },
+        findAccount,
+        {
+          new: true,
+          useFindAndModify: false,
+        },
+      );
+      return updated;
+}  */
 }
