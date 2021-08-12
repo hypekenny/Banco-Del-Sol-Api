@@ -59,18 +59,3 @@ export class AccountService {
     }
   }
 }
-
-// balance: { amount: newTransaction.balance },
-// $push: { history: newTransaction.transaction },
-
-// $set: {
-//   balance: {
-//     amount: newTransaction.value,
-//     history: { $push: newTransaction },
-//   },
-// },
-// },
-// {
-// new: true,
-// useFindAndModify: false,
-// },
