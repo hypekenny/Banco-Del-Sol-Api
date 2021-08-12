@@ -19,19 +19,14 @@ export class TransactionsService {
 
   async createTransaction(newTransaction: Transaction) {
     try {
-      const transaction = await this.transactionModel.create(
-        {
-          sender_email: newTransaction.sender_email,
-          receiver_email: newTransaction.receiver_email,
-          amount: newTransaction.amount,
-          type: newTransaction.type,
-          date: Date(),
-        },
-        {
-          new: true,
-          useFindAndModify: false,
-        },
-      );
+      const transaction = await this.transactionModel.create({
+        sender_email: newTransaction.sender_email,
+        receiver_email: newTransaction.receiver_email,
+        amount: newTransaction.amount,
+        type: newTransaction.type,
+        date: Date(),
+      });
+      console.log('AAAAAAAAAAA', transaction);
       return transaction;
     } catch (error) {
       console.log(error);
