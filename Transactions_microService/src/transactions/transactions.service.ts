@@ -24,6 +24,8 @@ export class TransactionsService {
           sender_email: newTransaction.sender_email,
           receiver_email: newTransaction.receiver_email,
           amount: newTransaction.amount,
+          type: newTransaction.type,
+          date: Date(),
         },
         {
           new: true,

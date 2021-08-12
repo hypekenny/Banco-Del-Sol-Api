@@ -16,7 +16,7 @@ export class TransactionsController {
   constructor(private transactionService: TransactionsService) {}
 
   @Get()
-  async getTransactions(@Res() res, @Body body) {
+  async getTransactions(@Res() res, @Body() body) {
     try {
       const transactions = await this.transactionService.getTransactions(
         body.email,
@@ -29,7 +29,7 @@ export class TransactionsController {
   }
 
   @Post()
-  async newTransaction(@Res() res, @Body body) {
+  async newTransaction(@Res() res, @Body() body) {
     try {
       const transaction = await this.transactionService.createTransaction(body);
       return res.status(HttpStatus.OK).json({

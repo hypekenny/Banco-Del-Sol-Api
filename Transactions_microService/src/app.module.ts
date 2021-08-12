@@ -7,12 +7,12 @@ import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
+    TransactionsModule,
     MongooseModule.forRoot('mongodb://localhost/banco-del-sol', {
       autoCreate: true,
     }),
-    TransactionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, TransactionsService],
+  providers: [AppService],
 })
 export class AppModule {}
