@@ -12,7 +12,7 @@ export type transactionType = {
   email: string;
   type: string;
   value: number;
-  date: Date;
+  date: string;
 };
 
 @Schema()

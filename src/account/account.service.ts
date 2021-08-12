@@ -3,11 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Account, AccountDocument, transactionType } from './account.model';
 import { Model } from 'mongoose';
 
-interface newTransactionType {
-  value: number;
-  transaction: transactionType;
-}
-
 const createCvu = () => {
   const a = Math.random() * 10 ** 23;
   const b = a.toLocaleString('fullwide', { useGrouping: false });
@@ -45,24 +40,20 @@ export class AccountService {
     }
   }
 
-  async updateAccount(email: string, newTransaction: newTransactionType) {
+  async updateAccount(email: string, newTransaction: transactionType) {
     try {
-      const findAccount = await this.accountModel.findOneAndUpdate(
-        {
-          email,
-        },
-        {
-          amount: newTransaction.value,
-          $push: {
-            history: newTransaction.transaction,
-          },
-        },
+      const findAccount = await this.accountModel.findOne({ email });
+      findAccount.balance.amount += newTransaction.value;
+      findAccount.balance.history.push(newTransaction);
+      const updated = await this.accountModel.findOneAndUpdate(
+        { email },
+        findAccount,
         {
           new: true,
           useFindAndModify: false,
         },
       );
-      return findAccount;
+      return updated;
     } catch (error) {
       console.log(error);
     }
@@ -71,3 +62,15 @@ export class AccountService {
 
 // balance: { amount: newTransaction.balance },
 // $push: { history: newTransaction.transaction },
+
+// $set: {
+//   balance: {
+//     amount: newTransaction.value,
+//     history: { $push: newTransaction },
+//   },
+// },
+// },
+// {
+// new: true,
+// useFindAndModify: false,
+// },

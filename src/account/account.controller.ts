@@ -9,7 +9,6 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { transactionType } from './account.model';
 import { AccountService } from './account.service';
 
 @Controller('account')
@@ -31,13 +30,17 @@ export class AccountController {
   @Put()
   async updateAccount(@Res() res, @Body() body, @Req() req) {
     try {
+      console.log('dd', body);
       const findAccount = await this.accountService.getAccount(req.user.email);
-      const value: number = findAccount.balance.amount + body.value;
-      const transaction: transactionType = body.transaction;
-      const newTransaction = { value, transaction };
+      const transaction = {
+        email: findAccount.email,
+        type: 'recarga',
+        value: body.value,
+        date: 'a',
+      };
       const updatedAccount = await this.accountService.updateAccount(
         req.user.email,
-        newTransaction,
+        transaction,
       );
       return res.status(HttpStatus.OK).json({
         message: 'Balance updated',
