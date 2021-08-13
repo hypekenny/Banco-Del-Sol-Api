@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Account, AccountDocument, transactionType } from './account.model';
 import { Model } from 'mongoose';
+import { Connection } from 'typeorm';
 
 const createCvu = () => {
   const a = Math.random() * 10 ** 23;
@@ -14,6 +15,7 @@ export class AccountService {
   constructor(
     @InjectModel('Account')
     private readonly accountModel: Model<AccountDocument>,
+    private connection: Connection,
   ) {}
 
   async getAccount(email: string): Promise<Account> {
@@ -41,56 +43,48 @@ export class AccountService {
   }
 
   async updateAccount(tran: transactionType) {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      let updateSender = {};
       if (tran.receiverEmail === tran.senderEmail) {
         const findSender = await this.accountModel.findOne({
           email: tran.senderEmail,
         });
         findSender.balance.amount += tran.value;
-        tran.type = 'Recarga';
         findSender.balance.history.push(tran);
-        updateSender = await this.accountModel.findOneAndUpdate(
-          { email: tran.senderEmail },
+        await queryRunner.manager.update(
+          this.accountModel,
+          tran.senderEmail,
           findSender,
-          {
-            new: true,
-            useFindAndModify: false,
-          },
         );
       } else {
         const findSender = await this.accountModel.findOne({
           email: tran.senderEmail,
         });
         findSender.balance.amount -= tran.value;
-        tran.type = 'Transferencia';
         findSender.balance.history.push(tran);
-        updateSender = await this.accountModel.findOneAndUpdate(
-          { email: tran.senderEmail },
+        await queryRunner.manager.update(
+          this.accountModel,
+          tran.senderEmail,
           findSender,
-          {
-            new: true,
-            useFindAndModify: false,
-          },
         );
         const findReceiver = await this.accountModel.findOne({
           email: tran.receiverEmail,
         });
         findReceiver.balance.amount += tran.value;
-        tran.type = 'Transferencia';
         findReceiver.balance.history.push(tran);
-        await this.accountModel.findOneAndUpdate(
-          { email: tran.receiverEmail },
+        await queryRunner.manager.update(
+          this.accountModel,
+          tran.receiverEmail,
           findReceiver,
-          {
-            new: true,
-            useFindAndModify: false,
-          },
         );
       }
-      return updateSender;
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
   }
 
