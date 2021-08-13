@@ -43,7 +43,6 @@ export class AccountService {
   async updateAccount(tran: transactionType) {
     try {
       let updateSender = {};
-      let updateReceiver = {};
       if (tran.receiverEmail === tran.senderEmail) {
         const findSender = await this.accountModel.findOne({
           email: tran.senderEmail,
@@ -80,7 +79,7 @@ export class AccountService {
         findReceiver.balance.amount += tran.value;
         tran.type = 'Transferencia';
         findReceiver.balance.history.push(tran);
-        updateReceiver = await this.accountModel.findOneAndUpdate(
+        await this.accountModel.findOneAndUpdate(
           { email: tran.receiverEmail },
           findReceiver,
           {
@@ -89,11 +88,7 @@ export class AccountService {
           },
         );
       }
-      return {
-        message: 'Transaction succeeded',
-        updateReceiver,
-        updateSender,
-      };
+      return updateSender;
     } catch (error) {
       console.log(error);
     }
