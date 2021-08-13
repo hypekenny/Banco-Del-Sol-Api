@@ -17,7 +17,9 @@ export class AccountController {
   @Get()
   async getAccount(@Res() res, @Req() req) {
     try {
-      const findAccount = await this.accountService.getAccount(req.user.email);
+      const findAccount = await this.accountService.getAccount(
+        req.user.email.toLowerCase(),
+      );
       return res.status(HttpStatus.OK).json(findAccount);
     } catch (error) {
       console.log(error);

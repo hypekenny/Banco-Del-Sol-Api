@@ -23,7 +23,7 @@ export class TransactionsController {
   async getTransactions(@Res() res, @Body() body) {
     try {
       const transactions = await this.transactionService.getTransactions(
-        body.email,
+        body.email.toLowerCase(),
       );
       return res.status(HttpStatus.OK).json(transactions);
     } catch (error) {
