@@ -27,7 +27,7 @@ export class AccountController {
     }
   }
 
-  @Put()
+  /*   @Put()
   async updateAccount(@Res() res, @Body() body, @Req() req) {
     try {
       const findAccount = await this.accountService.getAccount(req.user.email);
@@ -44,5 +44,5 @@ export class AccountController {
       console.log(error);
       return null;
     }
-  }
+  } */
 }
