@@ -9,10 +9,11 @@ export type balanceType = {
 };
 
 export type transactionType = {
-  email: string;
+  sender_email: string;
+  receiver_email: string;
   type: string;
   value: number;
-  date: string;
+  date: Date;
 };
 
 @Schema()

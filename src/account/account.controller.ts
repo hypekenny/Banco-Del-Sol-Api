@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from './account.service';
+import axios from 'axios';
 
 @Controller('account')
 @UseGuards(AuthGuard('jwt'))
@@ -28,28 +29,16 @@ export class AccountController {
     }
   }
 
-  @Put()
-  async updateAccount(@Res() res, @Body() body, @Req() req) {
+  @Post()
+  async updateAccount(@Res() res, @Body() transaction) {
     try {
-      console.log('dd', body);
-      const findAccount = await this.accountService.getAccount(req.user.email);
-      const transaction = {
-        email: findAccount.email,
-        type: 'recarga',
-        value: body.value,
-        date: 'a',
-      };
-      const updatedAccount = await this.accountService.updateAccount(
-        req.user.email,
+      const response = await axios.post(
+        'http://localhost:3000/api2/transactions',
         transaction,
       );
-      return res.status(HttpStatus.OK).json({
-        message: 'Balance updated',
-        account: updatedAccount,
-      });
+      return res.send(response);
     } catch (error) {
       console.log(error);
-      return null;
     }
   }
 }
