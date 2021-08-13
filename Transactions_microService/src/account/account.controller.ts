@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Req,
+  Post,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from './account.service';
@@ -21,6 +22,17 @@ export class AccountController {
     try {
       const findAccount = await this.accountService.getAccount(req.user.email);
       return res.status(HttpStatus.OK).json(findAccount);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  @Post()
+  async createAccount(@Res() res, @Req() req) {
+    try {
+      const created = await this.accountService.createAccountCheat(req.email);
+      return res.send(created);
     } catch (error) {
       console.log(error);
       return null;

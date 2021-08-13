@@ -94,4 +94,17 @@ export class AccountService {
       console.log(error);
     }
   }
+
+  async createAccountCheat(email: string): Promise<Account> {
+    try {
+      const newAccount = new this.accountModel({
+        email,
+        cvu: createCvu(),
+        balance: { amount: 0, history: [] },
+      });
+      return await newAccount.save();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
