@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Put,
   Body,
+  Post,
   UseGuards,
   Req,
 } from '@nestjs/common';
