@@ -28,7 +28,7 @@ export class TransactionsController {
       return res.status(HttpStatus.OK).json(transactions);
     } catch (error) {
       console.error(error);
-      return res.status(500);
+      return res.status(400);
     }
   }
 

@@ -3,11 +3,8 @@ import {
   Get,
   Res,
   HttpStatus,
-  Put,
-  Body,
   UseGuards,
   Req,
-  Post,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from './account.service';
@@ -24,7 +21,7 @@ export class AccountController {
       return res.status(HttpStatus.OK).json(findAccount);
     } catch (error) {
       console.log(error);
-      return null;
+      return res.status(400);
     }
   }
 }
