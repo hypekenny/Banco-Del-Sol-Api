@@ -28,13 +28,15 @@ export class UserController {
     try {
       const user = await this.userService.getUserByEmail(req.user.email);
       const account = await this.accountService.getAccount(req.user.email);
+      if (!user || !account)
+        throw { error: { message: 'El usuario no existe' } };
       return res.status(HttpStatus.OK).json({
         user,
         account,
       });
     } catch (error) {
       console.log(error);
-      return null;
+      return res.status(HttpStatus.NOT_FOUND).json(error);
     }
   }
 
@@ -43,9 +45,8 @@ export class UserController {
     try {
       const newUser = await this.userService.createUser(user);
       const newAccount = await this.accountService.createAccount(user);
-      if (!newUser || !newAccount) {
-        return res.status(HttpStatus.BAD_REQUEST).send('User already exists');
-      }
+      if (!newUser || !newAccount)
+        throw { error: { message: 'El usuario ya existe' } };
 
       return res.status(HttpStatus.OK).json({
         message: 'User created',
@@ -53,27 +54,27 @@ export class UserController {
         account: newAccount,
       });
     } catch (error) {
-      return null;
+      console.log(error);
+      return res.status(HttpStatus.BAD_REQUEST).json(error);
     }
   }
 
   @Put()
   async updateUser(@Res() res, @Body() user, @Req() req) {
     try {
-      console.log('entre al put controller');
       const updatedUser = await this.userService.updateUser(
         req.user.email,
         user,
       );
       if (!updatedUser)
-        return res.status(HttpStatus.BAD_REQUEST).send('User not found');
+        throw { error: { message: 'El usuario no se ha encontrado' } };
       return res.status(HttpStatus.OK).json({
         message: 'User updated',
         updatedUser,
       });
     } catch (error) {
       console.log(error);
-      return null;
+      return res.status(HttpStatus.NOT_FOUND).json(error);
     }
   }
 }
