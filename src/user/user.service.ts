@@ -15,7 +15,7 @@ export class UserService {
       return user;
     } catch (error) {
       console.log(error);
-      return null;
+      return error;
     }
   }
 
@@ -25,7 +25,7 @@ export class UserService {
       return await newUser.save();
     } catch (error) {
       console.log(error);
-      return null;
+      return error;
     }
   }
 
@@ -41,7 +41,7 @@ export class UserService {
       return updatedUser;
     } catch (error) {
       console.log(error);
-      return null;
+      return error;
     }
   }
 }
