@@ -35,34 +35,13 @@ export class TransactionsController {
   @Post()
   async newTransaction(@Res() res, @Body() body) {
     try {
-      const newTransaction = await this.transactionService.createTransaction(
-        body,
-      );
+      const succeeded = await this.transactionService.createTransaction(body);
       return res.status(HttpStatus.OK).send({
-        message: 'Transaction completed',
-        transaction: newTransaction,
+        succeeded,
       });
     } catch (error) {
       console.error(error);
       return res.status(400);
     }
   }
-
-  @Post()
-  async updateAccount(transaction) {
-    const updated = await this.accountService.updateAccount;
-  }
-  /*     const findAccount = await this.accountModel.findOne({ email });
-      findAccount.balance.amount += newTransaction.value;
-      findAccount.balance.history.push(newTransaction);
-      const updated = await this.accountModel.findOneAndUpdate(
-        { email },
-        findAccount,
-        {
-          new: true,
-          useFindAndModify: false,
-        },
-      );
-      return updated;
-}  */
 }

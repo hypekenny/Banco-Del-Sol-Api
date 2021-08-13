@@ -3,13 +3,26 @@ import { Document } from 'mongoose';
 
 export type AccountDocument = Account & Document;
 
+export type balanceType = {
+  amount: number;
+  history: Array<transactionType>;
+};
+
+export type transactionType = {
+  sender_email: string;
+  receiver_email: string;
+  type: string;
+  value: number;
+  date: Date;
+};
+
 @Schema()
 export class Account {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true, default: 0 })
-  balance: number;
+  @Prop({ required: true, type: Object })
+  balance: balanceType;
 
   @Prop({ required: true })
   cvu: string;
