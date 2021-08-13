@@ -44,15 +44,15 @@ export class AccountService {
     try {
       let updateSender = {};
       let updateReceiver = {};
-      if (tran.receiver_email === tran.sender_email) {
+      if (tran.receiverEmail === tran.senderEmail) {
         const findSender = await this.accountModel.findOne({
-          email: tran.sender_email,
+          email: tran.senderEmail,
         });
         findSender.balance.amount += tran.value;
         tran.type = 'Recarga';
         findSender.balance.history.push(tran);
         updateSender = await this.accountModel.findOneAndUpdate(
-          { email: tran.sender_email },
+          { email: tran.senderEmail },
           findSender,
           {
             new: true,
@@ -61,13 +61,13 @@ export class AccountService {
         );
       } else {
         const findSender = await this.accountModel.findOne({
-          email: tran.sender_email,
+          email: tran.senderEmail,
         });
         findSender.balance.amount -= tran.value;
         tran.type = 'Transferencia';
         findSender.balance.history.push(tran);
         updateSender = await this.accountModel.findOneAndUpdate(
-          { email: tran.sender_email },
+          { email: tran.senderEmail },
           findSender,
           {
             new: true,
@@ -75,13 +75,13 @@ export class AccountService {
           },
         );
         const findReceiver = await this.accountModel.findOne({
-          email: tran.receiver_email,
+          email: tran.receiverEmail,
         });
         findReceiver.balance.amount += tran.value;
         tran.type = 'Transferencia';
         findReceiver.balance.history.push(tran);
         updateReceiver = await this.accountModel.findOneAndUpdate(
-          { email: tran.receiver_email },
+          { email: tran.receiverEmail },
           findReceiver,
           {
             new: true,
@@ -89,7 +89,6 @@ export class AccountService {
           },
         );
       }
-
       return {
         message: 'Transaction succeeded',
         updateReceiver,
