@@ -39,22 +39,4 @@ export class AccountService {
       console.log(error);
     }
   }
-
-  /*   async updateAccount(email: string, newBalance: number) {
-    try {
-      const findAccount = await this.accountModel.findOneAndUpdate(
-        {
-          email: email,
-        },
-        { balance: newBalance },
-        {
-          new: true,
-          useFindAndModify: false,
-        },
-      );
-      return findAccount;
-    } catch (error) {
-      console.log(error);
-    }
-  } */
 }

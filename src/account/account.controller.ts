@@ -26,23 +26,4 @@ export class AccountController {
       return null;
     }
   }
-
-  /*   @Put()
-  async updateAccount(@Res() res, @Body() body, @Req() req) {
-    try {
-      const findAccount = await this.accountService.getAccount(req.user.email);
-      const newBalance = findAccount.balance + body.value;
-      const updatedAccount = await this.accountService.updateAccount(
-        req.user.email,
-        newBalance,
-      );
-      return res.status(HttpStatus.OK).json({
-        message: 'Balance updated',
-        account: updatedAccount,
-      });
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  } */
 }
