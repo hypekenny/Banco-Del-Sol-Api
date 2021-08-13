@@ -29,7 +29,6 @@ export class TransactionsService {
         date: Date(),
       });
       const response = await this.accountService.updateAccount(transaction);
-      console.log('AAAAAAA', response);
       return response;
     } catch (error) {
       console.log(error);

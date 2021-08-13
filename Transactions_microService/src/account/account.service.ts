@@ -43,11 +43,13 @@ export class AccountService {
   async updateAccount(tran: transactionType) {
     try {
       let updateSender = {};
+      let updateReceiver = {};
       if (tran.receiver_email === tran.sender_email) {
         const findSender = await this.accountModel.findOne({
           email: tran.sender_email,
         });
         findSender.balance.amount += tran.value;
+        tran.type = 'Recarga';
         findSender.balance.history.push(tran);
         updateSender = await this.accountModel.findOneAndUpdate(
           { email: tran.sender_email },
@@ -62,6 +64,7 @@ export class AccountService {
           email: tran.sender_email,
         });
         findSender.balance.amount -= tran.value;
+        tran.type = 'Transferencia';
         findSender.balance.history.push(tran);
         updateSender = await this.accountModel.findOneAndUpdate(
           { email: tran.sender_email },
@@ -71,20 +74,22 @@ export class AccountService {
             useFindAndModify: false,
           },
         );
+        const findReceiver = await this.accountModel.findOne({
+          email: tran.receiver_email,
+        });
+        findReceiver.balance.amount += tran.value;
+        tran.type = 'Transferencia';
+        findReceiver.balance.history.push(tran);
+        updateReceiver = await this.accountModel.findOneAndUpdate(
+          { email: tran.receiver_email },
+          findReceiver,
+          {
+            new: true,
+            useFindAndModify: false,
+          },
+        );
       }
-      const findReceiver = await this.accountModel.findOne({
-        email: tran.receiver_email,
-      });
-      findReceiver.balance.amount += tran.value;
-      findReceiver.balance.history.push(tran);
-      const updateReceiver = await this.accountModel.findOneAndUpdate(
-        { email: tran.receiver_email },
-        findReceiver,
-        {
-          new: true,
-          useFindAndModify: false,
-        },
-      );
+
       return {
         message: 'Transaction succeeded',
         updateReceiver,
