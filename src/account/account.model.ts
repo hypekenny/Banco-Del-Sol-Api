@@ -9,8 +9,8 @@ export type balanceType = {
 };
 
 export type transactionType = {
-  sender_email: string;
-  receiver_email: string;
+  senderEmail: string;
+  receiverEmail: string;
   type: string;
   value: number;
   date: Date;
