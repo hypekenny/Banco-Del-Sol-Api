@@ -27,15 +27,4 @@ export class AccountController {
       return null;
     }
   }
-
-  @Post()
-  async createAccount(@Res() res, @Req() req) {
-    try {
-      const created = await this.accountService.createAccountCheat(req.email);
-      return res.send(created);
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
 }
