@@ -6,10 +6,10 @@ export type TransactionDocument = Transaction & Document;
 @Schema()
 export class Transaction {
   @Prop({ required: true })
-  sender_email: string;
+  senderEmail: string;
 
   @Prop({ required: true })
-  receiver_email: string;
+  receiverEmail: string;
 
   @Prop({ required: true })
   value: number;

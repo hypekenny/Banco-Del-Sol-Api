@@ -14,7 +14,7 @@ export class TransactionsService {
 
   async getTransactions(email: string): Promise<Transaction[]> {
     const transactions = await this.transactionModel.find({
-      sender_email: email,
+      senderEmail: email,
     });
     return transactions;
   }
@@ -22,8 +22,8 @@ export class TransactionsService {
   async createTransaction(newTransaction: Transaction) {
     try {
       const transaction = await this.transactionModel.create({
-        sender_email: newTransaction.sender_email,
-        receiver_email: newTransaction.receiver_email,
+        senderEmail: newTransaction.senderEmail,
+        receiverEmail: newTransaction.receiverEmail,
         value: newTransaction.value,
         type: newTransaction.type,
         date: Date(),
