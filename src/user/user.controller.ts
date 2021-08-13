@@ -26,8 +26,12 @@ export class UserController {
   @Get()
   async getUser(@Res() res, @Req() req) {
     try {
-      const user = await this.userService.getUserByEmail(req.user.email);
-      const account = await this.accountService.getAccount(req.user.email);
+      const user = await this.userService.getUserByEmail(
+        req.user.email.toLowerCase(),
+      );
+      const account = await this.accountService.getAccount(
+        req.user.email.toLowerCase(),
+      );
       if (!user || !account)
         throw { error: { message: 'El usuario no existe' } };
       return res.status(HttpStatus.OK).json({
@@ -43,6 +47,7 @@ export class UserController {
   @Post()
   async createUser(@Res() res, @Body() user): Promise<User> {
     try {
+      user.email = user.email.toLowerCase();
       const newUser = await this.userService.createUser(user);
       const newAccount = await this.accountService.createAccount(user);
       if (!newUser || !newAccount)
@@ -63,7 +68,7 @@ export class UserController {
   async updateUser(@Res() res, @Body() user, @Req() req) {
     try {
       const updatedUser = await this.userService.updateUser(
-        req.user.email,
+        req.user.email.toLowerCase(),
         user,
       );
       if (!updatedUser)
