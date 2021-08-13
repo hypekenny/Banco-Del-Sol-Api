@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountService } from '../account/account.service';
-import { AccountDocument } from '../account/account.model';
 import { TransactionDocument, Transaction } from './transactions.model';
 
 @Injectable()
@@ -10,7 +9,6 @@ export class TransactionsService {
   constructor(
     @InjectModel('Transaction')
     private readonly transactionModel: Model<TransactionDocument>,
-    private readonly accountModel: Model<AccountDocument>,
     private accountService: AccountService,
   ) {}
 
