@@ -36,9 +36,7 @@ export class TransactionsController {
   async newTransaction(@Res() res, @Body() body) {
     try {
       const succeeded = await this.transactionService.createTransaction(body);
-      return res.status(HttpStatus.OK).send({
-        succeeded,
-      });
+      return res.status(HttpStatus.OK).send(succeeded);
     } catch (error) {
       console.error(error);
       return res.status(400);
