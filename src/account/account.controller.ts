@@ -37,12 +37,9 @@ export class AccountController {
         'http://localhost:3000/api2/transactions',
         transaction,
       );
-      if (!updatedAccount)
+      if (!response)
         throw { error: { message: 'No se ha encontrado el balance' } };
-      return res.status(HttpStatus.OK).json({
-        message: 'Balance updated',
-        account: updatedAccount,
-      });
+      return res.send(response);
     } catch (error) {
       console.log(error);
       return res.status(HttpStatus.NOT_FOUND).json(error);
