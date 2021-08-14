@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AccountModule } from './account/account.module';
 import { AuthStrategy } from './auth/auth.strategy';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AuthStrategy } from './auth/auth.strategy';
     MongooseModule.forRoot('mongodb://localhost/banco-del-sol', {
       autoCreate: true,
     }),
+    ContactsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthStrategy],
