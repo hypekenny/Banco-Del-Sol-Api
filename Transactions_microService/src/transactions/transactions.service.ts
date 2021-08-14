@@ -21,14 +21,17 @@ export class TransactionsService {
 
   async createTransaction(newTransaction: Transactions) {
     try {
-      const transaction = await this.transactionRepository.save({
+      const response = await this.accountService.updateAccount(newTransaction);
+      let succeeded = false;
+      if (response) succeeded = true;
+      await this.transactionRepository.save({
         senderEmail: newTransaction.senderEmail,
         receiverEmail: newTransaction.receiverEmail,
         value: newTransaction.value,
         type: newTransaction.type,
         date: Date(),
+        succeeded,
       });
-      const response = await this.accountService.updateAccount(transaction);
       return response;
     } catch (error) {
       console.log(error);

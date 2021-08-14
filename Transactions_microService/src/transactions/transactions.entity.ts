@@ -21,4 +21,7 @@ export class Transactions {
 
   @Column()
   date: Date;
+
+  @Column()
+  succeeded: boolean;
 }
