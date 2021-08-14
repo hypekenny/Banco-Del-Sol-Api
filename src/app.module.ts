@@ -9,12 +9,12 @@ import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
+    ContactsModule,
     AccountModule,
     UserModule,
     MongooseModule.forRoot('mongodb://localhost/banco-del-sol', {
       autoCreate: true,
     }),
-    ContactsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthStrategy],
