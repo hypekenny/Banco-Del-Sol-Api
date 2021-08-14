@@ -1,27 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectRepository } from '@nestjs/typeorm';
 import { AccountService } from '../account/account.service';
-import { TransactionDocument, Transaction } from './transactions.model';
+import { Repository } from 'typeorm';
+import { Transactions, TransactionDocument } from './transactions.entity';
 
 @Injectable()
 export class TransactionsService {
   constructor(
-    @InjectModel('Transaction')
-    private readonly transactionModel: Model<TransactionDocument>,
-    private accountService: AccountService,
+    @InjectRepository(Transactions)
+    private readonly transactionRepository: Repository<TransactionDocument>,
+    private readonly accountService: AccountService,
   ) {}
 
-  async getTransactions(email: string): Promise<Transaction[]> {
-    const transactions = await this.transactionModel.find({
+  async getTransactions(email: string): Promise<Transactions[]> {
+    const transactions = await this.transactionRepository.find({
       senderEmail: email,
     });
     return transactions;
   }
 
-  async createTransaction(newTransaction: Transaction) {
+  async createTransaction(newTransaction: Transactions) {
     try {
-      const transaction = await this.transactionModel.create({
+      const transaction = await this.transactionRepository.save({
         senderEmail: newTransaction.senderEmail,
         receiverEmail: newTransaction.receiverEmail,
         value: newTransaction.value,
@@ -34,4 +34,20 @@ export class TransactionsService {
       console.log(error);
     }
   }
+
+  // async createTransaction(newTransaction: Transaction) {
+  //   try {
+  //     const transaction = await this.transactionModel.create({
+  //       senderEmail: newTransaction.senderEmail,
+  //       receiverEmail: newTransaction.receiverEmail,
+  //       value: newTransaction.value,
+  //       type: newTransaction.type,
+  //       date: Date(),
+  //     });
+  //     const response = await this.accountService.updateAccount(transaction);
+  //     return response;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 }

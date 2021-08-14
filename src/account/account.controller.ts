@@ -25,7 +25,7 @@ export class AccountController {
       );
       if (!findAccount)
         throw { error: { message: 'No se ha encontrado el balance' } };
-      return res.status(HttpStatus.OK).json(findAccount);
+      return res.send(findAccount);
     } catch (error) {
       console.log(error);
       return res.status(HttpStatus.NOT_FOUND).json(error);
@@ -45,7 +45,7 @@ export class AccountController {
         throw { error: { message: 'No se ha encontrado el balance' } };
       return res.send(response.data);
     } catch (error) {
-      console.log('a', error);
+      console.log(error);
       return res.status(HttpStatus.NOT_FOUND).json(error);
     }
   }
