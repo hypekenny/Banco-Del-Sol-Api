@@ -12,6 +12,9 @@ export class Contacts {
   name: string;
 
   @Prop({ required: true })
+  lastName: string;
+
+  @Prop({ required: true })
   cvu: string;
 }
 
