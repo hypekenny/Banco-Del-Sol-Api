@@ -1,19 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { AccountService } from '../account/account.service';
-import { TransactionDocument, Transaction } from './transactions.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Transaction } from './transactions.entity';
 
 @Injectable()
 export class TransactionsService {
   constructor(
-    @InjectModel('Transaction')
-    private readonly transactionModel: Model<TransactionDocument>,
-    private accountService: AccountService,
+    @InjectRepository(Transaction)
+    private readonly transactionRepository: Repository<Transaction>,
   ) {}
 
   async getTransactions(email: string): Promise<Transaction[]> {
-    const transactions = await this.transactionModel.find({
+    const transactions = await this.transactionRepository.find({
       senderEmail: email,
     });
     return transactions;
@@ -21,17 +19,33 @@ export class TransactionsService {
 
   async createTransaction(newTransaction: Transaction) {
     try {
-      const transaction = await this.transactionModel.create({
+      const transaction = await this.transactionRepository.save({
         senderEmail: newTransaction.senderEmail,
         receiverEmail: newTransaction.receiverEmail,
         value: newTransaction.value,
         type: newTransaction.type,
         date: Date(),
       });
-      const response = await this.accountService.updateAccount(transaction);
-      return response;
+      // const response = await this.accountService.updateAccount(transaction);
+      return transaction;
     } catch (error) {
       console.log(error);
     }
   }
+
+  // async createTransaction(newTransaction: Transaction) {
+  //   try {
+  //     const transaction = await this.transactionModel.create({
+  //       senderEmail: newTransaction.senderEmail,
+  //       receiverEmail: newTransaction.receiverEmail,
+  //       value: newTransaction.value,
+  //       type: newTransaction.type,
+  //       date: Date(),
+  //     });
+  //     const response = await this.accountService.updateAccount(transaction);
+  //     return response;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 }
