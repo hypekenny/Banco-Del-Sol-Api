@@ -1,9 +1,9 @@
 import { Column, Entity, ObjectIdColumn, ObjectID } from 'typeorm';
 
-export type TransactionDocument = Transaction & Document;
+export type TransactionDocument = Transactions & Document;
 
 @Entity()
-export class Transaction {
+export class Transactions {
   @ObjectIdColumn()
   id: ObjectID;
 

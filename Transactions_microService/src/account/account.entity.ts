@@ -1,6 +1,6 @@
 import { Column, Entity, ObjectIdColumn, ObjectID } from 'typeorm';
 
-export type AccountDocument = Account & Document;
+export type AccountDocument = Accounts & Document;
 
 export type balanceType = {
   amount: number;
@@ -16,7 +16,7 @@ export type transactionType = {
 };
 
 @Entity()
-export class Account {
+export class Accounts {
   @ObjectIdColumn()
   id: ObjectID;
 

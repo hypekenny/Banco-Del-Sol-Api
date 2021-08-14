@@ -3,9 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionsModule } from './transactions/transactions.module';
-import { Transaction } from './transactions/transactions.entity';
+import { Transactions } from './transactions/transactions.entity';
 import { AccountModule } from './account/account.module';
-import { Account } from './account/account.entity';
+import { Accounts } from './account/account.entity';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { Account } from './account/account.entity';
       type: 'mongodb',
       host: 'localhost',
       database: 'banco-del-sol',
-      entities: [Transaction, Account],
+      entities: [Transactions, Accounts],
       synchronize: true,
       useUnifiedTopology: true,
     }),

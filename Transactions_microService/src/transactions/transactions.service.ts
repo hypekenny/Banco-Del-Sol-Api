@@ -2,24 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountService } from '../account/account.service';
 import { Repository } from 'typeorm';
-import { Transaction, TransactionDocument } from './transactions.entity';
+import { Transactions, TransactionDocument } from './transactions.entity';
 
 @Injectable()
 export class TransactionsService {
   constructor(
-    @InjectRepository(Transaction)
+    @InjectRepository(Transactions)
     private readonly transactionRepository: Repository<TransactionDocument>,
     private readonly accountService: AccountService,
   ) {}
 
-  async getTransactions(email: string): Promise<Transaction[]> {
+  async getTransactions(email: string): Promise<Transactions[]> {
     const transactions = await this.transactionRepository.find({
       senderEmail: email,
     });
     return transactions;
   }
 
-  async createTransaction(newTransaction: Transaction) {
+  async createTransaction(newTransaction: Transactions) {
     try {
       const transaction = await this.transactionRepository.save({
         senderEmail: newTransaction.senderEmail,

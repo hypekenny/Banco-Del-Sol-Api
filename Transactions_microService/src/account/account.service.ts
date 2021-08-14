@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
-  Account,
+  Accounts,
   AccountDocument,
   balanceType,
   transactionType,
@@ -17,12 +17,12 @@ const createCvu = () => {
 @Injectable()
 export class AccountService {
   constructor(
-    @InjectRepository(Account)
+    @InjectRepository(Accounts)
     private readonly accountRepository: Repository<AccountDocument>,
     private readonly connection: Connection,
   ) {}
 
-  async getAccount(email: string): Promise<Account> {
+  async getAccount(email: string): Promise<Accounts> {
     try {
       const findAccount = await this.accountRepository.findOne({
         email: email,
@@ -33,7 +33,7 @@ export class AccountService {
     }
   }
 
-  async createAccount(account: Account) {
+  async createAccount(account: Accounts) {
     try {
       console.log(account);
       const newAccount = await this.accountRepository.save({
