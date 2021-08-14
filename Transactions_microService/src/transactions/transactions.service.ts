@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AccountService } from 'src/account/account.service';
+import { AccountService } from '../account/account.service';
 import { Repository } from 'typeorm';
 import { Transaction, TransactionDocument } from './transactions.entity';
 
@@ -28,8 +28,8 @@ export class TransactionsService {
         type: newTransaction.type,
         date: Date(),
       });
-      const response = await this.accountService;
-      return transaction;
+      const response = await this.accountService.updateAccount(transaction);
+      return response;
     } catch (error) {
       console.log(error);
     }
