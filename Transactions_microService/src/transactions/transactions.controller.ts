@@ -10,14 +10,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { AccountService } from '../account/account.service';
 
 @Controller('transactions')
 export class TransactionsController {
-  constructor(
-    private transactionService: TransactionsService,
-    private accountService: AccountService,
-  ) {}
+  constructor(private transactionService: TransactionsService) {}
 
   @Get()
   async getTransactions(@Res() res, @Body() body) {

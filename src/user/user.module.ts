@@ -3,8 +3,8 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './user.model';
-import { AccountModule } from 'src/account/account.module';
-import { ContactsModule } from 'src/contacts/contacts.module';
+import { AccountModule } from '../account/account.module';
+import { ContactsModule } from '../contacts/contacts.module';
 
 @Module({
   imports: [
