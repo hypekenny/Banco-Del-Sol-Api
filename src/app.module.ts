@@ -5,9 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AccountModule } from './account/account.module';
 import { AuthStrategy } from './auth/auth.strategy';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
+    ContactsModule,
     AccountModule,
     UserModule,
     MongooseModule.forRoot('mongodb://localhost/banco-del-sol', {

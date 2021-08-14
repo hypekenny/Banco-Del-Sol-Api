@@ -13,6 +13,7 @@ import {
 import { User } from './user.model';
 import { UserService } from './user.service';
 import { AccountService } from '../account/account.service';
+import { ContactsService } from '../contacts/contacts.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
@@ -21,6 +22,7 @@ export class UserController {
   constructor(
     private userService: UserService,
     private accountService: AccountService,
+    private contactsService: ContactsService,
   ) {}
 
   @Get()
@@ -50,6 +52,8 @@ export class UserController {
       user.email = user.email.toLowerCase();
       const newUser = await this.userService.createUser(user);
       const newAccount = await this.accountService.createAccount(user);
+      const { cvu } = newAccount;
+      const newContact = await this.contactsService.createContact(user, cvu);
       if (!newUser || !newAccount)
         throw { error: { message: 'El usuario ya existe' } };
 
