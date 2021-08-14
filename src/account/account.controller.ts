@@ -37,6 +37,7 @@ export class AccountController {
     try {
       transaction.senderEmail = transaction.senderEmail.toLowerCase();
       transaction.receiverEmail = transaction.receiverEmail.toLowerCase();
+      console.log('ASDASDASDAS', transaction);
       const response = await axios.post(
         'http://localhost:3000/api2/transactions',
         transaction,
