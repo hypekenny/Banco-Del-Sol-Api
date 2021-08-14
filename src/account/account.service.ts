@@ -17,7 +17,6 @@ export class AccountService {
   ) {}
 
   async getAccount(email: string): Promise<Account> {
-    console.log('getAccount service ->', email);
     try {
       const findAccount = await this.accountModel.findOne({
         email: email,

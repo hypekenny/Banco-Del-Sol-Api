@@ -21,9 +21,7 @@ export class TransactionsController {
   @Post()
   async newTransaction(@Res() res, @Body() body) {
     try {
-      console.log('newTransaction -> ', body);
       const succeeded = await this.transactionService.createTransaction(body);
-      console.log('newTransaction response -> ', succeeded);
       return res.send(succeeded);
     } catch (error) {
       console.error(error);

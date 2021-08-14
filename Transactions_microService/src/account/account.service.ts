@@ -51,7 +51,6 @@ export class AccountService {
         const findSender = await this.accountRepository.findOne({
           email: tran.senderEmail,
         });
-        console.log('findSender ->', findSender);
         findSender.balance.amount += tran.value;
         findSender.balance.history.push(tran);
         await queryRunner.manager.save(findSender);
@@ -71,8 +70,8 @@ export class AccountService {
         await queryRunner.manager.save(findReceiver);
         return findSender;
       }
-    } catch (err) {
-      console.log('rollback en updateAccount', err);
+    } catch (error) {
+      console.log(error);
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
