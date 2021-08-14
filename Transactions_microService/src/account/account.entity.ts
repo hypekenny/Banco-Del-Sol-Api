@@ -1,4 +1,10 @@
-import { Column, Entity, ObjectIdColumn, ObjectID } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectID,
+  ObjectIdColumn,
+  PrimaryColumn,
+} from 'typeorm';
 
 export type AccountDocument = Accounts & Document;
 
@@ -18,9 +24,9 @@ export type transactionType = {
 @Entity()
 export class Accounts {
   @ObjectIdColumn()
-  id: ObjectID;
+  public _id: ObjectID;
 
-  @Column({ unique: true })
+  @PrimaryColumn()
   email: string;
 
   @Column()

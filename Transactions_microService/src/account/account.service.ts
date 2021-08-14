@@ -1,10 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Accounts,
-  AccountDocument,
-  balanceType,
-  transactionType,
-} from './account.entity';
+import { Accounts, AccountDocument, transactionType } from './account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
 
@@ -56,10 +51,11 @@ export class AccountService {
         const findSender = await this.accountRepository.findOne({
           email: tran.senderEmail,
         });
-        console.log('a', findSender);
-        // findSender.balance.amount += tran.value;
-        // findSender.balance.history.push(tran);
+        console.log('findSender ->', findSender);
+        findSender.balance.amount += tran.value;
+        findSender.balance.history.push(tran);
         await queryRunner.manager.save(findSender);
+        return findSender;
       } else {
         const findSender = await this.accountRepository.findOne({
           email: tran.senderEmail,
@@ -73,9 +69,10 @@ export class AccountService {
         findReceiver.balance.amount += tran.value;
         findReceiver.balance.history.push(tran);
         await queryRunner.manager.save(findReceiver);
+        return findSender;
       }
     } catch (err) {
-      console.log(err);
+      console.log('rollback en updateAccount', err);
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();

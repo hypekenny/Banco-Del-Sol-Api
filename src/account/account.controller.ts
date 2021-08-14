@@ -20,12 +20,13 @@ export class AccountController {
   @Get()
   async getAccount(@Res() res, @Req() req) {
     try {
+      console.log('getAccount');
       const findAccount = await this.accountService.getAccount(
         req.user.email.toLowerCase(),
       );
       if (!findAccount)
         throw { error: { message: 'No se ha encontrado el balance' } };
-      return res.status(HttpStatus.OK).json(findAccount);
+      return res.send(findAccount);
     } catch (error) {
       console.log(error);
       return res.status(HttpStatus.NOT_FOUND).json(error);
@@ -37,11 +38,12 @@ export class AccountController {
     try {
       transaction.senderEmail = transaction.senderEmail.toLowerCase();
       transaction.receiverEmail = transaction.receiverEmail.toLowerCase();
-      console.log('ASDASDASDAS', transaction);
+      console.log('updateAccount ->', transaction);
       const response = await axios.post(
         'http://localhost:3000/api2/transactions',
         transaction,
       );
+      console.log('updateAccount response ->', response.data);
       if (!response.data)
         throw { error: { message: 'No se ha encontrado el balance' } };
       return res.send(response.data);
