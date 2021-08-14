@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AccountService } from 'src/account/account.service';
 import { Repository } from 'typeorm';
-import { Transaction } from './transactions.entity';
+import { Transaction, TransactionDocument } from './transactions.entity';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectRepository(Transaction)
-    private readonly transactionRepository: Repository<Transaction>,
+    private readonly transactionRepository: Repository<TransactionDocument>,
+    private readonly accountService: AccountService,
   ) {}
 
   async getTransactions(email: string): Promise<Transaction[]> {
@@ -26,7 +28,7 @@ export class TransactionsService {
         type: newTransaction.type,
         date: Date(),
       });
-      // const response = await this.accountService.updateAccount(transaction);
+      const response = await this.accountService;
       return transaction;
     } catch (error) {
       console.log(error);

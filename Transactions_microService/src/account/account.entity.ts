@@ -1,5 +1,7 @@
 import { Column, Entity, ObjectIdColumn, ObjectID } from 'typeorm';
 
+export type AccountDocument = Account & Document;
+
 export type balanceType = {
   amount: number;
   history: Array<transactionType>;
