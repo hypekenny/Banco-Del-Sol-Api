@@ -29,6 +29,7 @@ export class TransactionsService {
         receiverEmail: newTransaction.receiverEmail,
         value: newTransaction.value,
         type: newTransaction.type,
+        comment: newTransaction.comment,
         date: Date(),
         succeeded,
       });

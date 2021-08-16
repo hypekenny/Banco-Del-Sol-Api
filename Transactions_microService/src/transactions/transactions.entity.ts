@@ -23,7 +23,7 @@ export class Transactions {
   date: Date;
 
   @Column()
-  Comment: string;
+  comment: string;
 
   @Column()
   succeeded: boolean;
