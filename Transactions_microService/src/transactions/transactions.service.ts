@@ -24,7 +24,7 @@ export class TransactionsService {
       const response = await this.accountService.updateAccount(newTransaction);
       let succeeded = false;
       if (response) succeeded = true;
-      await this.transactionRepository.save({
+      await this.transactionRepository.create({
         senderEmail: newTransaction.senderEmail,
         receiverEmail: newTransaction.receiverEmail,
         value: newTransaction.value,
