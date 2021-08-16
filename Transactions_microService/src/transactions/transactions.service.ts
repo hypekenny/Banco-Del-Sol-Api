@@ -21,7 +21,10 @@ export class TransactionsService {
 
   async createTransaction(newTransaction: Transactions) {
     try {
-      const response = await this.accountService.updateAccount(newTransaction);
+      const response = await this.accountService.updateAccount({
+        ...newTransaction,
+        date: Date(),
+      });
       let succeeded = false;
       if (response) succeeded = true;
       await this.transactionRepository.insert({
