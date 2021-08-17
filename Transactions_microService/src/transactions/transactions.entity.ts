@@ -20,5 +20,11 @@ export class Transactions {
   type: string;
 
   @Column()
-  date: Date;
+  date: string;
+
+  @Column()
+  comment: string;
+
+  @Column()
+  succeeded: boolean;
 }

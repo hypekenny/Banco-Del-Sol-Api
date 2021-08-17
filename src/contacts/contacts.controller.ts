@@ -10,14 +10,15 @@ import { AuthGuard } from '@nestjs/passport';
 import { ContactsService } from './contacts.service';
 
 @Controller('contacts')
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 export class ContactsController {
   constructor(private contactsService: ContactsService) {}
 
   @Get(':email')
   async getContact(@Res() res, @Param('email') param) {
     try {
-      const contact = await this.contactsService.getContact(param.email);
+      console.log(param);
+      const contact = await this.contactsService.getContact(param);
       if (!contact)
         throw { error: { message: 'No se ha encontrado el contacto' } };
       return res.status(HttpStatus.OK).json(contact);

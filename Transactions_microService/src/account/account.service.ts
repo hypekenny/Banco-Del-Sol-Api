@@ -54,6 +54,7 @@ export class AccountService {
         findSender.balance.amount += tran.value;
         findSender.balance.history.push(tran);
         await queryRunner.manager.save(findSender);
+        // throw new Error();
         return findSender;
       } else {
         const findSender = await this.accountRepository.findOne({
