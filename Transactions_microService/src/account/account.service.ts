@@ -30,7 +30,6 @@ export class AccountService {
 
   async createAccount(account: Accounts) {
     try {
-      console.log(account);
       const newAccount = await this.accountRepository.save({
         ...account,
         email: account.email,
