@@ -19,7 +19,7 @@ import { ContactsService } from '../contacts/contacts.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
-// @UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(
     private userService: UserService,
@@ -28,15 +28,13 @@ export class UserController {
   ) {}
 
   @Get()
-  async getUser(@Res() res, @Req() req, @Query() query) {
+  async getUser(@Res() res, @Req() req) {
     try {
       const user = await this.userService.getUserByEmail(
-        // req.user.email.toLowerCase(),
-        query.email.toLowerCase(),
+        req.user.email.toLowerCase(),
       );
       const account = await this.accountService.getAccount(
-        // req.user.email.toLowerCase(),
-        query.email.toLowerCase(),
+        req.user.email.toLowerCase(),
       );
       if (!user || !account)
         throw { error: { message: 'El usuario no existe' } };
