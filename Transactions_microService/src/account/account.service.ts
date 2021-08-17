@@ -59,21 +59,23 @@ export class AccountService {
         const findSender = await this.accountRepository.findOne({
           email: tran.senderEmail,
         });
-        findSender.balance.amount -= tran.value;
-        findSender.balance.history.push(tran);
-        await queryRunner.manager.save(findSender);
-        const findReceiver = await this.accountRepository.findOne({
-          email: tran.receiverEmail,
-        });
-        findReceiver.balance.amount += tran.value;
-        findReceiver.balance.history.push(tran);
-        await queryRunner.manager.save(findReceiver);
-        await queryRunner.commitTransaction();
-        // throw new Error();
-        return findSender;
+        if (findSender.balance.amount > 0) {
+          findSender.balance.amount -= tran.value;
+          findSender.balance.history.push(tran);
+          await queryRunner.manager.save(findSender);
+          const findReceiver = await this.accountRepository.findOne({
+            email: tran.receiverEmail,
+          });
+          findReceiver.balance.amount += tran.value;
+          findReceiver.balance.history.push(tran);
+          await queryRunner.manager.save(findReceiver);
+          await queryRunner.commitTransaction();
+          // throw new Error();
+          return findSender;
+        }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();

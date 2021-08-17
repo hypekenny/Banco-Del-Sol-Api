@@ -43,8 +43,9 @@ export class AccountController {
         'http://localhost:3000/api2/transactions',
         transaction,
       );
-      if (!response.data)
+      if (!response.data) {
         throw { error: { message: 'No se ha encontrado el balance' } };
+      }
       return res.send(response.data);
     } catch (error) {
       console.log(error);
