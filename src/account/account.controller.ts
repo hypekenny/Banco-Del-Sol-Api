@@ -15,16 +15,15 @@ import { AccountService } from './account.service';
 import axios from 'axios';
 
 @Controller('account')
-// @UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 export class AccountController {
   constructor(private accountService: AccountService) {}
 
   @Get()
-  async getAccount(@Res() res, @Req() req, @Query() query) {
+  async getAccount(@Res() res, @Req() req) {
     try {
       const findAccount = await this.accountService.getAccount(
-        // req.user.email.toLowerCase(),
-        query.email.toLowerCase(),
+        req.user.email.toLowerCase(),
       );
       if (!findAccount)
         throw { error: { message: 'No se ha encontrado el balance' } };
