@@ -25,6 +25,7 @@ export class TransactionsService {
         ...newTransaction,
         date: Date(),
       });
+      if (response === undefined) throw new Error();
       let succeeded = false;
       if (response) succeeded = true;
       await this.transactionRepository.insert({
@@ -38,7 +39,7 @@ export class TransactionsService {
       });
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
