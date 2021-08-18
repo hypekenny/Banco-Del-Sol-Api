@@ -50,22 +50,26 @@ export class AccountService {
         const findSender = await this.accountRepository.findOne({
           email: tran.senderEmail,
         });
-        findSender.balance.amount += tran.value;
-        findSender.balance.history.push(tran);
-        await queryRunner.manager.save(findSender);
-        // throw new Error();
-        return findSender;
+        if (findSender && findSender.balance) {
+          findSender.balance.amount += tran.value;
+          findSender.balance.history.push(tran);
+          await queryRunner.manager.save(findSender);
+          // throw new Error();
+          return findSender;
+        }
       } else {
         const findSender = await this.accountRepository.findOne({
           email: tran.senderEmail,
         });
-        if (findSender.balance.amount > 0) {
+        if (findSender && findSender.balance) {
           findSender.balance.amount -= tran.value;
           findSender.balance.history.push(tran);
           await queryRunner.manager.save(findSender);
-          const findReceiver = await this.accountRepository.findOne({
-            email: tran.receiverEmail,
-          });
+        }
+        const findReceiver = await this.accountRepository.findOne({
+          email: tran.receiverEmail,
+        });
+        if (findReceiver && findReceiver.balance) {
           findReceiver.balance.amount += tran.value;
           findReceiver.balance.history.push(tran);
           await queryRunner.manager.save(findReceiver);
@@ -77,6 +81,7 @@ export class AccountService {
     } catch (error) {
       console.error(error);
       await queryRunner.rollbackTransaction();
+      return error;
     } finally {
       await queryRunner.release();
     }
