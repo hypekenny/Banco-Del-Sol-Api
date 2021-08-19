@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Body, Post, Query } from '@nestjs/common';
+import { Controller, Get, Res, Body, Post } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 
 @Controller('transactions')
@@ -6,11 +6,9 @@ export class TransactionsController {
   constructor(private transactionService: TransactionsService) {}
 
   @Get()
-  async getTransactions(@Res() res, @Query() email) {
+  async getTransactions(@Res() res) {
     try {
-      const transaction = await this.transactionService.getTransaction(
-        email.toLowerCase(),
-      );
+      const transaction = await this.transactionService.getAllTransactions();
       if (!transaction) throw new Error();
       return res.send(transaction);
     } catch (error) {
