@@ -12,11 +12,16 @@ export class TransactionsService {
     private readonly accountService: AccountService,
   ) {}
 
-  async getTransactions(email: string): Promise<Transactions[]> {
+  async getTransaction(email: string): Promise<Transactions[]> {
     const transactions = await this.transactionRepository.find({
       senderEmail: email,
     });
     return transactions;
+  }
+
+  async getAllTransactions(): Promise<Transactions[]> {
+    const allTransactions = await this.transactionRepository.find();
+    return allTransactions;
   }
 
   async createTransaction(newTransaction: Transactions) {
