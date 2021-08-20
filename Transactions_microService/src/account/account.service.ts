@@ -17,12 +17,10 @@ export class AccountService {
     private readonly connection: Connection,
   ) {}
 
-  async getAccount(email: string): Promise<Accounts> {
+  async getAllAccounts() {
     try {
-      const findAccount = await this.accountRepository.findOne({
-        email: email,
-      });
-      return findAccount;
+      const allAccounts = await this.accountRepository.find();
+      return allAccounts;
     } catch (error) {
       console.log(error);
     }
