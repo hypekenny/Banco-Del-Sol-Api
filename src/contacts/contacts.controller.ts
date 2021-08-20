@@ -10,7 +10,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ContactsService } from './contacts.service';
 
 @Controller('contacts')
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 export class ContactsController {
   constructor(private contactsService: ContactsService) {}
 
