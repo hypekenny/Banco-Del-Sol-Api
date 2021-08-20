@@ -18,8 +18,9 @@ export class ContactsController {
   async getContact(@Res() res, @Param('email') param) {
     try {
       const contact = await this.contactsService.getContact(param);
-      if (!contact)
+      if (!contact) {
         throw { error: { message: 'No se ha encontrado el contacto' } };
+      }
       return res.status(HttpStatus.OK).json(contact);
     } catch (error) {
       console.log(error);

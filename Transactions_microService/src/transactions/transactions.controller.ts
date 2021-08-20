@@ -21,11 +21,13 @@ export class TransactionsController {
   async newTransaction(@Res() res, @Body() body) {
     try {
       const succeeded = await this.transactionService.createTransaction(body);
-      if (!succeeded) throw new Error();
+      if (succeeded === undefined) throw new Error();
       return res.send(succeeded);
     } catch (error) {
       console.error(error);
-      return res.status(400);
+      return res.status(400).send({
+        message: 'Not found',
+      });
     }
   }
 }
