@@ -26,5 +26,5 @@ export class Transactions {
   comment: string;
 
   @Column()
-  succeeded: boolean;
+  condition: string;
 }
