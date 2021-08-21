@@ -9,6 +9,15 @@ export class UserService {
     @InjectModel('User') private readonly userModel: Model<UserDocument>,
   ) {}
 
+  async getAll() {
+    try {
+      const allUsers = await this.userModel.find();
+      return allUsers;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
   async getUserByEmail(email: string): Promise<User> {
     try {
       const user = await this.userModel.findOne({ email });
