@@ -49,11 +49,9 @@ export class UserController {
   }
 
   @Get('/all')
-  async getAllUsers(@Res() res, @Req() req) {
+  async getAllUsers(@Res() res) {
     try {
-      const user = await this.userService.getUserByEmail(
-        req.user.email.toLowerCase(),
-      );
+      const user = await this.userService.getAll();
       if (!user) throw { error: { message: 'El usuario no existe' } };
       return res.status(HttpStatus.OK).json(user);
     } catch (error) {
