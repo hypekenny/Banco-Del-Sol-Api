@@ -26,13 +26,6 @@ export class TransactionsService {
 
   async createTransaction(newTransaction: Transactions) {
     try {
-      const response = await this.accountService.updateAccount({
-        ...newTransaction,
-        date: Date(),
-      });
-      if (response === undefined) throw new Error();
-      let succeeded = false;
-      if (response) succeeded = true;
       await this.transactionRepository.insert({
         senderEmail: newTransaction.senderEmail,
         receiverEmail: newTransaction.receiverEmail,
@@ -40,27 +33,33 @@ export class TransactionsService {
         type: newTransaction.type,
         comment: newTransaction.comment,
         date: Date(),
-        succeeded,
+        condition: 'pending',
       });
-      return response;
     } catch (error) {
       console.error(error);
     }
   }
 
-  // async createTransaction(newTransaction: Transaction) {
-  //   try {
-  //     const transaction = await this.transactionModel.create({
-  //       senderEmail: newTransaction.senderEmail,
-  //       receiverEmail: newTransaction.receiverEmail,
-  //       value: newTransaction.value,
-  //       type: newTransaction.type,
-  //       date: Date(),
-  //     });
-  //     const response = await this.accountService.updateAccount(transaction);
-  //     return response;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  async updateTransactionService(id: string, condition: string) {
+    try {
+      if (condition === 'accepted') {
+        const foundTransaction = await this.transactionRepository.findOne(id);
+        const transactionResponse = await this.accountService.updateAccount(
+          foundTransaction,
+        );
+        if (transactionResponse === undefined) throw new Error();
+        let succeeded = 'failed';
+        if (transactionResponse) succeeded = 'completed';
+        foundTransaction.condition = succeeded;
+        await this.transactionRepository.save(foundTransaction);
+      }
+      if (condition === 'declined') {
+        const foundTransaction = await this.transactionRepository.findOne(id);
+        foundTransaction.condition = 'declined';
+        await this.transactionRepository.save(foundTransaction);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
