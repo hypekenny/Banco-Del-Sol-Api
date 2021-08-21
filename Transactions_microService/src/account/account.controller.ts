@@ -1,27 +1,14 @@
-import {
-  Controller,
-  Get,
-  Res,
-  HttpStatus,
-  UseGuards,
-  Req,
-  Body,
-  Post,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Get, Res, HttpStatus, Body, Post } from '@nestjs/common';
 import { AccountService } from './account.service';
 
 @Controller('account')
-@UseGuards(AuthGuard('jwt'))
 export class AccountController {
   constructor(private accountService: AccountService) {}
 
   @Get()
-  async getAccount(@Res() res, @Req() req) {
+  async getAccount(@Res() res) {
     try {
-      const findAccount = await this.accountService.getAccount(
-        req.user.email.toLowerCase(),
-      );
+      const findAccount = await this.accountService.getAllAccounts();
       return res.status(HttpStatus.OK).json(findAccount);
     } catch (error) {
       console.log(error);

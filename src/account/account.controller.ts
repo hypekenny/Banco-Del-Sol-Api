@@ -7,8 +7,6 @@ import {
   Post,
   UseGuards,
   Req,
-  Query,
-  Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from './account.service';
@@ -35,18 +33,19 @@ export class AccountController {
   }
 
   @Post()
-  async updateAccount(@Res() res, @Body() transaction) {
+  async createTransaction(@Res() res, @Body() transaction) {
+    transaction.senderEmail = transaction.senderEmail.toLowerCase();
+    transaction.receiverEmail = transaction.receiverEmail.toLowerCase();
     try {
-      transaction.senderEmail = transaction.senderEmail.toLowerCase();
-      transaction.receiverEmail = transaction.receiverEmail.toLowerCase();
-      const response = await axios.post(
-        'http://localhost:3000/api2/transactions',
-        transaction,
+      const receiver = await this.accountService.getAccount(
+        transaction.receiverEmail,
       );
-      if (!response.data) {
-        throw { error: { message: 'No se ha encontrado el balance' } };
-      }
-      return res.send(response.data);
+      if (receiver)
+        await axios.post(
+          'http://localhost:3000/api2/transactions',
+          transaction,
+        );
+      else throw { error: { message: 'No se ha encontrado el usuario' } };
     } catch (error) {
       console.log(error);
       return res.status(HttpStatus.NOT_FOUND).json(error);

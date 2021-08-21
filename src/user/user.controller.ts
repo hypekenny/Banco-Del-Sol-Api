@@ -48,6 +48,18 @@ export class UserController {
     }
   }
 
+  @Get('/all')
+  async getAllUsers(@Res() res) {
+    try {
+      const user = await this.userService.getAll();
+      if (!user) throw { error: { message: 'El usuario no existe' } };
+      return res.status(HttpStatus.OK).json(user);
+    } catch (error) {
+      console.log(error);
+      return res.status(HttpStatus.NOT_FOUND).json(error);
+    }
+  }
+
   @Post()
   async createUser(@Res() res, @Body() user): Promise<User> {
     try {

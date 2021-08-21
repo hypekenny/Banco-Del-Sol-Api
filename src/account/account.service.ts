@@ -19,7 +19,7 @@ export class AccountService {
   async getAccount(email: string): Promise<Account> {
     try {
       const findAccount = await this.accountModel.findOne({
-        email: email,
+        email,
       });
       return findAccount;
     } catch (error) {
