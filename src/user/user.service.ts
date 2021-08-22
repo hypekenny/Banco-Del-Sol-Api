@@ -30,6 +30,7 @@ export class UserService {
 
   async createUser(user: User): Promise<User> {
     try {
+      user.condition = 'active';
       const newUser = new this.userModel(user);
       return await newUser.save();
     } catch (error) {
