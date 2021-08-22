@@ -34,4 +34,7 @@ export class Accounts {
 
   @Column()
   cvu: string;
+
+  @Column()
+  condition: string;
 }
