@@ -33,6 +33,7 @@ export class AccountService {
         email: user.email,
         cvu: createCvu(),
         balance: { amount: 0, history: [] },
+        condition: 'active',
       });
       return await newAccount.save();
     } catch (error) {
