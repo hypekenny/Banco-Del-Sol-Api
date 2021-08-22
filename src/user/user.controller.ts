@@ -7,9 +7,8 @@ import {
   Res,
   HttpStatus,
   UseGuards,
-  Query,
+  Delete,
   Req,
-  Param,
 } from '@nestjs/common';
 
 import { User } from './user.model';
@@ -98,6 +97,21 @@ export class UserController {
     } catch (error) {
       console.log(error);
       return res.status(HttpStatus.NOT_FOUND).json(error);
+    }
+  }
+
+  @Delete()
+  async manageUsers(@Res() res, @Body() body) {
+    try {
+      if (body.users.length && body.condition) {
+        for (const user of body.users) {
+          user.condition = body.condition;
+          this.userService.updateUser(user.email, user);
+          this.accountService.manageAccount(user.email, body.condition);
+        }
+      } else console.log('error en manageUser');
+    } catch (error) {
+      console.log(error);
     }
   }
 }
