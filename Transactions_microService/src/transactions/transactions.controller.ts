@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Body, Post } from '@nestjs/common';
+import { Controller, Get, Res, Body, Post, Put } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 
 @Controller('transactions')
@@ -22,7 +22,7 @@ export class TransactionsController {
     await this.transactionService.createTransaction(body);
   }
 
-  @Post('/update')
+  @Put()
   async updateTransaction(@Body() body) {
     await this.transactionService.updateTransactionService(
       body.id,
