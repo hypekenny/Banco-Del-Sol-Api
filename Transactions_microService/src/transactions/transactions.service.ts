@@ -44,6 +44,7 @@ export class TransactionsService {
     try {
       if (condition === 'accepted') {
         const foundTransaction = await this.transactionRepository.findOne(id);
+        foundTransaction.condition = 'completed';
         const transactionResponse = await this.accountService.updateAccount(
           foundTransaction,
         );

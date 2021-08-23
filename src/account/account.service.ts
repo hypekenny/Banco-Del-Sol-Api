@@ -33,6 +33,7 @@ export class AccountService {
         email: user.email,
         cvu: createCvu(),
         balance: { amount: 0, history: [] },
+        condition: 'active',
       });
       return await newAccount.save();
     } catch (error) {
@@ -40,22 +41,30 @@ export class AccountService {
     }
   }
 
-  async updateAccount(email: string, newTransaction: transactionType) {
-    try {
-      const findAccount = await this.accountModel.findOne({ email });
-      findAccount.balance.amount += newTransaction.value;
-      findAccount.balance.history.push(newTransaction);
-      const updated = await this.accountModel.findOneAndUpdate(
-        { email },
-        findAccount,
-        {
-          new: true,
-          useFindAndModify: false,
-        },
-      );
-      return updated;
-    } catch (error) {
-      console.log(error);
-    }
+  async manageAccount(email: string, condition: string) {
+    const findAccount = await this.accountModel.findOne({ email });
+    findAccount.condition = condition;
+    await this.accountModel.findOneAndUpdate({ email }, findAccount, {
+      new: true,
+    });
   }
+
+  // async updateAccount() {
+  //   try {
+  //     const findAccount = await this.accountModel.findOne({ email });
+  //     findAccount.balance.amount += newTransaction.value;
+  //     findAccount.balance.history.push(newTransaction);
+  //     const updated = await this.accountModel.findOneAndUpdate(
+  //       { email },
+  //       findAccount,
+  //       {
+  //         new: true,
+  //         useFindAndModify: false,
+  //       },
+  //     );
+  //     return updated;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 }

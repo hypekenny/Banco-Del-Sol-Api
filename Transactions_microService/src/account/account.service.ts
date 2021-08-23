@@ -38,6 +38,16 @@ export class AccountService {
     }
   }
 
+  async updateAmount(email: string, amount: number) {
+    try {
+      const findAccount = await this.accountRepository.findOne({ email });
+      findAccount.balance.amount = amount;
+      this.accountRepository.save(findAccount);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async updateAccount(tran: transactionType) {
     let senderAcc: Accounts;
     let receiverAcc: Accounts;

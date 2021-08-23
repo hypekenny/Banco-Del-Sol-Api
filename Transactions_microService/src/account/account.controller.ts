@@ -1,4 +1,12 @@
-import { Controller, Get, Res, HttpStatus, Body, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Res,
+  HttpStatus,
+  Body,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { AccountService } from './account.service';
 
 @Controller('account')
@@ -25,5 +33,10 @@ export class AccountController {
       console.log(error);
       return res.status(400);
     }
+  }
+
+  @Put()
+  async updateAccount(@Body() body) {
+    await this.accountService.updateAmount(body.email, body.amount);
   }
 }

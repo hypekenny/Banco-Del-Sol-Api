@@ -26,6 +26,9 @@ export class Account {
 
   @Prop({ required: true })
   cvu: string;
+
+  @Prop()
+  condition: string;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);
