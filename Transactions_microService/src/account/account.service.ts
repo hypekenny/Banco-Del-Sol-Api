@@ -79,7 +79,10 @@ export class AccountService {
           senderAcc.balance.history.push(tran);
           await this.accountRepository.save(senderAcc);
         } else throw new Error();
-        if (auxSenderAmount - tran.value !== senderAcc.balance.amount)
+        if (
+          auxSenderAmount - tran.value !== senderAcc.balance.amount ||
+          senderAcc.balance.amount < 0
+        )
           throw new Error();
         receiverAcc = await this.accountRepository.findOne({
           email: tran.receiverEmail,
