@@ -12,6 +12,7 @@ export class AuthStrategy extends PassportStrategy(Strategy) {
     });
   }
   async validate(payload) {
+    console.log('kevin');
     const user = {
       user_id: payload.user_id,
       email: payload.email,

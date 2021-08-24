@@ -35,6 +35,7 @@ export class TransactionsService {
         date: Date(),
         condition: 'pending',
       });
+      return true;
     } catch (error) {
       console.error(error);
     }
@@ -53,11 +54,15 @@ export class TransactionsService {
         if (transactionResponse) succeeded = 'completed';
         foundTransaction.condition = succeeded;
         await this.transactionRepository.save(foundTransaction);
+        const allTransactions = await this.getAllTransactions();
+        return allTransactions;
       }
       if (condition === 'declined') {
         const foundTransaction = await this.transactionRepository.findOne(id);
         foundTransaction.condition = 'declined';
         await this.transactionRepository.save(foundTransaction);
+        const allTransactions = await this.getAllTransactions();
+        return allTransactions;
       }
     } catch (error) {
       console.error(error);

@@ -18,15 +18,19 @@ export class TransactionsController {
   }
 
   @Post()
-  async newTransaction(@Body() body) {
+  async newTransaction(@Body() body, @Res() res) {
+    console.log('create transaction');
     await this.transactionService.createTransaction(body);
+    res.send(true);
   }
 
   @Put()
-  async updateTransaction(@Body() body) {
-    await this.transactionService.updateTransactionService(
-      body.id,
-      body.condition,
-    );
+  async updateTransaction(@Body() body, @Res() res) {
+    const allTransactions =
+      await this.transactionService.updateTransactionService(
+        body.id,
+        body.condition,
+      );
+    res.send(allTransactions);
   }
 }
