@@ -41,6 +41,15 @@ export class AccountService {
     }
   }
 
+  async getAll() {
+    try {
+      const allAcc = this.accountModel.find();
+      return allAcc;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async manageAccount(email: string, condition: string) {
     const findAccount = await this.accountModel.findOne({ email });
     findAccount.condition = condition;

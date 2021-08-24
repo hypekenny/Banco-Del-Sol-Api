@@ -109,6 +109,9 @@ export class UserController {
           this.userService.updateUser(user.email, user);
           this.accountService.manageAccount(user.email, body.condition);
         }
+        const allUsers = await this.userService.getAll();
+        const allAccounts = await this.accountService.getAll();
+        res.send({ users: allUsers, accounts: allAccounts });
       } else console.log('error en manageUser');
     } catch (error) {
       console.log(error);
