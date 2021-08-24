@@ -2,17 +2,40 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ContactsService } from './contacts.service';
 
 describe('ContactsService', () => {
-  let service: ContactsService;
+  class ContactsServiceMock {
+    getContact(email: string) {
+      return {
+        email: 'john@hotmail.com',
+        name: 'John',
+        lastName: 'Doe',
+        cvu: '1121547563',
+      };
+    }
+  }
+
+  let app: TestingModule;
+  let contact: ContactsService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [ContactsService],
+    const ContactsServiceProvider = {
+      provide: ContactsService,
+      contactsClass: ContactsServiceMock,
+    };
+    app = await Test.createTestingModule({
+      providers: [ContactsServiceProvider],
     }).compile();
 
-    service = module.get<ContactsService>(ContactsService);
+    contact = app.get<ContactsService>(ContactsService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should get a contact by email', async () => {
+    const expectedRes = {
+      email: 'john@hotmail.com',
+      name: 'John',
+      lastName: 'Doe',
+      cvu: '1121547563',
+    };
+    const service = await contact.getContact('john@hotmail.com');
+    expect(service).toEqual(expectedRes);
   });
 });
