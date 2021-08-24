@@ -23,6 +23,7 @@ export class AccountController {
       const findAccount = await this.accountService.getAccount(
         req.user.email.toLowerCase(),
       );
+      console.log('cuenta encontrada', findAccount);
       if (!findAccount)
         throw { error: { message: 'No se ha encontrado el balance' } };
       return res.send(findAccount);
@@ -41,10 +42,9 @@ export class AccountController {
         transaction.receiverEmail,
       );
       if (receiver)
-        await axios.post(
-          'http://localhost:3000/api2/transactions',
-          transaction,
-        );
+        await axios
+          .post('http://localhost:3000/api2/transactions', transaction)
+          .then(() => res.send(true));
       else throw { error: { message: 'No se ha encontrado el usuario' } };
     } catch (error) {
       console.log(error);
