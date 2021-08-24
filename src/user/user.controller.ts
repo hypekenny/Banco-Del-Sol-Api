@@ -66,7 +66,7 @@ export class UserController {
       const newUser = await this.userService.createUser(user);
       const newAccount = await this.accountService.createAccount(user);
       const { cvu } = newAccount;
-      const newContact = await this.contactsService.createContact(user, cvu);
+      await this.contactsService.createContact(user, cvu);
       if (!newUser || !newAccount)
         throw { error: { message: 'El usuario ya existe' } };
 
