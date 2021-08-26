@@ -3,13 +3,14 @@ import {
   Get,
   Res,
   HttpStatus,
-  Put,
   Body,
+  Post,
   UseGuards,
   Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from './account.service';
+import axios from 'axios';
 
 @Controller('account')
 @UseGuards(AuthGuard('jwt'))
@@ -19,30 +20,35 @@ export class AccountController {
   @Get()
   async getAccount(@Res() res, @Req() req) {
     try {
-      const findAccount = await this.accountService.getAccount(req.user.email);
-      return res.status(HttpStatus.OK).json(findAccount);
+      const findAccount = await this.accountService.getAccount(
+        req.user.email.toLowerCase(),
+      );
+      console.log('cuenta encontrada', findAccount);
+      if (!findAccount)
+        throw { error: { message: 'No se ha encontrado el balance' } };
+      return res.send(findAccount);
     } catch (error) {
       console.log(error);
-      return null;
+      return res.status(HttpStatus.NOT_FOUND).json(error);
     }
   }
 
-  @Put()
-  async updateAccount(@Res() res, @Body() body, @Req() req) {
+  @Post()
+  async createTransaction(@Res() res, @Body() transaction) {
+    transaction.senderEmail = transaction.senderEmail.toLowerCase();
+    transaction.receiverEmail = transaction.receiverEmail.toLowerCase();
     try {
-      const findAccount = await this.accountService.getAccount(req.user.email);
-      const newBalance = findAccount.balance + body.value;
-      const updatedAccount = await this.accountService.updateAccount(
-        req.user.email,
-        newBalance,
+      const receiver = await this.accountService.getAccount(
+        transaction.receiverEmail,
       );
-      return res.status(HttpStatus.OK).json({
-        message: 'Balance updated',
-        account: updatedAccount,
-      });
+      if (receiver)
+        await axios
+          .post('http://localhost:3000/api2/transactions', transaction)
+          .then(() => res.send(true));
+      else throw { error: { message: 'No se ha encontrado el usuario' } };
     } catch (error) {
       console.log(error);
-      return null;
+      return res.status(HttpStatus.NOT_FOUND).json(error);
     }
   }
 }

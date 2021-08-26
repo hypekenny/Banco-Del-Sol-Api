@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { AccountModule } from './account/account.module';
 import { AuthStrategy } from './auth/auth.strategy';
 import { ConfigModule } from '@nestjs/config';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     AccountModule,
     UserModule,
+    ContactsModule,
     MongooseModule.forRoot(process.env.DATABASE_PATH, {
       autoCreate: true,
     }),

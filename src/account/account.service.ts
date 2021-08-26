@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Account, AccountDocument } from './account.model';
+import { Account, AccountDocument, transactionType } from './account.model';
 import { Model } from 'mongoose';
 
 const createCvu = () => {
@@ -19,7 +19,7 @@ export class AccountService {
   async getAccount(email: string): Promise<Account> {
     try {
       const findAccount = await this.accountModel.findOne({
-        email: email,
+        email,
       });
       return findAccount;
     } catch (error) {
@@ -27,12 +27,13 @@ export class AccountService {
     }
   }
 
-  async createAccount(account: Account): Promise<Account> {
+  async createAccount(user: Account): Promise<Account> {
     try {
       const newAccount = new this.accountModel({
-        ...account,
-        email: account.email,
+        email: user.email,
         cvu: createCvu(),
+        balance: { amount: 0, history: [] },
+        condition: 'active',
       });
       return await newAccount.save();
     } catch (error) {
@@ -40,21 +41,39 @@ export class AccountService {
     }
   }
 
-  async updateAccount(email: string, newBalance: number) {
+  async getAll() {
     try {
-      const findAccount = await this.accountModel.findOneAndUpdate(
-        {
-          email: email,
-        },
-        { balance: newBalance },
-        {
-          new: true,
-          useFindAndModify: false,
-        },
-      );
-      return findAccount;
+      const allAcc = this.accountModel.find();
+      return allAcc;
     } catch (error) {
       console.log(error);
     }
   }
+
+  async manageAccount(email: string, condition: string) {
+    const findAccount = await this.accountModel.findOne({ email });
+    findAccount.condition = condition;
+    await this.accountModel.findOneAndUpdate({ email }, findAccount, {
+      new: true,
+    });
+  }
+
+  // async updateAccount() {
+  //   try {
+  //     const findAccount = await this.accountModel.findOne({ email });
+  //     findAccount.balance.amount += newTransaction.value;
+  //     findAccount.balance.history.push(newTransaction);
+  //     const updated = await this.accountModel.findOneAndUpdate(
+  //       { email },
+  //       findAccount,
+  //       {
+  //         new: true,
+  //         useFindAndModify: false,
+  //       },
+  //     );
+  //     return updated;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 }

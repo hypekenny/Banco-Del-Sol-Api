@@ -9,23 +9,33 @@ export class UserService {
     @InjectModel('User') private readonly userModel: Model<UserDocument>,
   ) {}
 
+  async getAll() {
+    try {
+      const allUsers = await this.userModel.find();
+      return allUsers;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
   async getUserByEmail(email: string): Promise<User> {
     try {
       const user = await this.userModel.findOne({ email });
       return user;
     } catch (error) {
       console.log(error);
-      return null;
+      return error;
     }
   }
 
   async createUser(user: User): Promise<User> {
     try {
+      user.condition = 'active';
       const newUser = new this.userModel(user);
       return await newUser.save();
     } catch (error) {
       console.log(error);
-      return null;
+      return error;
     }
   }
 
@@ -41,7 +51,7 @@ export class UserService {
       return updatedUser;
     } catch (error) {
       console.log(error);
-      return null;
+      return error;
     }
   }
 }

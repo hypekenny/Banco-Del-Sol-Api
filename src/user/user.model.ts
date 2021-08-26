@@ -34,6 +34,9 @@ export class User {
 
   @Prop({ type: Object })
   address: address;
+
+  @Prop()
+  condition: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
