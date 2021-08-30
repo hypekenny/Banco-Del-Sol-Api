@@ -64,6 +64,10 @@ export class UserController {
     try {
       user.email = user.email.toLowerCase();
       const newUser = await this.userService.createUser(user);
+      if (!newUser.email) {
+        throw { error: { message: 'Datos incorrectos' } };
+      }
+
       const newAccount = await this.accountService.createAccount(user);
       const { cvu } = newAccount;
       await this.contactsService.createContact(user, cvu);
