@@ -23,7 +23,6 @@ export class AccountController {
       const findAccount = await this.accountService.getAccount(
         req.user.email.toLowerCase(),
       );
-      console.log('cuenta encontrada', findAccount);
       if (!findAccount)
         throw { error: { message: 'No se ha encontrado el balance' } };
       return res.send(findAccount);
