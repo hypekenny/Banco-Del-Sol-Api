@@ -19,7 +19,6 @@ export class TransactionsController {
 
   @Post()
   async newTransaction(@Body() body, @Res() res) {
-    console.log('create transaction');
     await this.transactionService.createTransaction(body);
     res.send(true);
   }
