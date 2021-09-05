@@ -26,7 +26,7 @@ export class TransactionsService {
 
   async createTransaction(newTransaction: Transactions) {
     try {
-      await this.transactionRepository.insert({
+      const newTran = await this.transactionRepository.insert({
         senderEmail: newTransaction.senderEmail,
         receiverEmail: newTransaction.receiverEmail,
         value: newTransaction.value,
@@ -35,6 +35,10 @@ export class TransactionsService {
         date: Date(),
         condition: 'pending',
       });
+      await this.updateTransactionService(
+        newTran.identifiers[0].id,
+        'accepted',
+      );
       return true;
     } catch (error) {
       console.error(error);
