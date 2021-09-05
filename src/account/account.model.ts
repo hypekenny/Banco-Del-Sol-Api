@@ -6,7 +6,6 @@ export type AccountDocument = Account & Document;
 export type balanceType = {
   amount: number;
   history: Array<transactionType>;
-  failedHistory: Array<string>;
 };
 
 export type transactionType = {
