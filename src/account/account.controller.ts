@@ -43,7 +43,7 @@ export class AccountController {
       if (receiver)
         await axios
           .post('http://localhost:3000/api2/transactions', transaction)
-          .then(() => res.send(true));
+          .then((response) => res.send(response.data));
       else throw { error: { message: 'No se ha encontrado el usuario' } };
     } catch (error) {
       console.log(error);
