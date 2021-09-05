@@ -63,8 +63,8 @@ export class TransactionsService {
         if (transactionResponse) succeeded = 'completed';
         foundTransaction.condition = succeeded;
         await this.transactionRepository.save(foundTransaction);
-        if (succeeded === 'failed' && cheat) return 'Transaccion fallida';
-        if (succeeded === 'completed' && cheat) return 'Transaccion realizada';
+        if (succeeded === 'failed' && cheat) return 'Transacción fallida';
+        if (succeeded === 'completed' && cheat) return 'Transacción realizada';
         const allTransactions = await this.getAllTransactions();
         return allTransactions;
       }
@@ -72,7 +72,7 @@ export class TransactionsService {
         const foundTransaction = await this.transactionRepository.findOne(id);
         foundTransaction.condition = 'declined';
         await this.transactionRepository.save(foundTransaction);
-        if (cheat) return 'Transaccion rechazada';
+        if (cheat) return 'Transacción rechazada';
         const allTransactions = await this.getAllTransactions();
         return allTransactions;
       }
