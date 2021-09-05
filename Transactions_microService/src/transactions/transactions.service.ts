@@ -35,17 +35,22 @@ export class TransactionsService {
         date: Date(),
         condition: 'pending',
       });
-      await this.updateTransactionService(
+      const response = await this.updateTransactionService(
         newTran.identifiers[0].id,
         'accepted',
+        true,
       );
-      return true;
+      return response;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async updateTransactionService(id: string, condition: string) {
+  async updateTransactionService(
+    id: string,
+    condition: string,
+    cheat: boolean,
+  ) {
     try {
       if (condition === 'accepted') {
         const foundTransaction = await this.transactionRepository.findOne(id);
@@ -58,6 +63,8 @@ export class TransactionsService {
         if (transactionResponse) succeeded = 'completed';
         foundTransaction.condition = succeeded;
         await this.transactionRepository.save(foundTransaction);
+        if (succeeded === 'failed' && cheat) return 'Transaccion fallida';
+        if (succeeded === 'completed' && cheat) return 'Transaccion realizada';
         const allTransactions = await this.getAllTransactions();
         return allTransactions;
       }
@@ -65,6 +72,7 @@ export class TransactionsService {
         const foundTransaction = await this.transactionRepository.findOne(id);
         foundTransaction.condition = 'declined';
         await this.transactionRepository.save(foundTransaction);
+        if (cheat) return 'Transaccion rechazada';
         const allTransactions = await this.getAllTransactions();
         return allTransactions;
       }

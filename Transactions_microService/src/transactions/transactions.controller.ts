@@ -19,8 +19,8 @@ export class TransactionsController {
 
   @Post()
   async newTransaction(@Body() body, @Res() res) {
-    await this.transactionService.createTransaction(body);
-    res.send(true);
+    const response = await this.transactionService.createTransaction(body);
+    res.send(response);
   }
 
   @Put()
@@ -29,6 +29,7 @@ export class TransactionsController {
       await this.transactionService.updateTransactionService(
         body.id,
         body.condition,
+        false,
       );
     res.send(allTransactions);
   }
