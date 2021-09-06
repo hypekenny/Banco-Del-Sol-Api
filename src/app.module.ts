@@ -14,7 +14,7 @@ const { DB_NAME } = process.env;
     ContactsModule,
     AccountModule,
     UserModule,
-    MongooseModule.forRoot(`mongodb://${DB_NAME}`, {
+    MongooseModule.forRoot(DB_NAME, {
       autoCreate: true,
     }),
   ],
