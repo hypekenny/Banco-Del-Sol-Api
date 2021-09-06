@@ -6,13 +6,15 @@ import { UserModule } from './user/user.module';
 import { AccountModule } from './account/account.module';
 import { AuthStrategy } from './auth/auth.strategy';
 import { ContactsModule } from './contacts/contacts.module';
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
+const { DB_NAME } = process.env;
 @Module({
   imports: [
     ContactsModule,
     AccountModule,
     UserModule,
-    MongooseModule.forRoot('mongodb://localhost/banco-del-sol', {
+    MongooseModule.forRoot(`mongodb://${DB_NAME}`, {
       autoCreate: true,
     }),
   ],
