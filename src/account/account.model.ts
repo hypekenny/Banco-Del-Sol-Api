@@ -14,6 +14,9 @@ export type transactionType = {
   type: string;
   value: number;
   date: Date;
+  comment: string;
+  condition: string;
+  failComment: string;
 };
 
 @Schema()

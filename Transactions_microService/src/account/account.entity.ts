@@ -19,6 +19,9 @@ export type transactionType = {
   type: string;
   value: number;
   date: string;
+  comment: string;
+  condition: string;
+  failCause: string;
 };
 
 @Entity()

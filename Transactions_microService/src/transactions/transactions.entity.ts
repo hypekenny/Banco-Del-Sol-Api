@@ -27,4 +27,7 @@ export class Transactions {
 
   @Column()
   condition: string;
+
+  @Column()
+  failCause: string;
 }
