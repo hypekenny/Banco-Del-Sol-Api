@@ -7,6 +7,8 @@ import { AccountModule } from './account/account.module';
 import { AuthStrategy } from './auth/auth.strategy';
 import { ContactsModule } from './contacts/contacts.module';
 
+const {MONGODB_URI} = process.env;
+
 @Module({
   imports: [
     ContactsModule,
