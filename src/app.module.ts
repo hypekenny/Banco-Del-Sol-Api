@@ -12,7 +12,7 @@ import { ContactsModule } from './contacts/contacts.module';
     ContactsModule,
     AccountModule,
     UserModule,
-    MongooseModule.forRoot('mongodb://localhost/banco-del-sol', {
+    MongooseModule.forRoot(MONGODB_URI, {
       autoCreate: true,
     }),
   ],
