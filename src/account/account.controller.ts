@@ -12,6 +12,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from './account.service';
 import axios from 'axios';
 
+const { API2 } = process.env;
+
 @Controller('account')
 @UseGuards(AuthGuard('jwt'))
 export class AccountController {
@@ -41,9 +43,7 @@ export class AccountController {
         transaction.receiverEmail,
       );
       if (receiver)
-        await axios
-          .post('http://localhost:3000/api2/transactions', transaction)
-          .then(() => res.send(true));
+        await axios.post(API2, transaction).then(() => res.send(true));
       else throw { error: { message: 'No se ha encontrado el usuario' } };
     } catch (error) {
       console.log(error);
